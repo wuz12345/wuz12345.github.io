@@ -1,0 +1,4572 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ZWiley的随记">
+      
+      
+        <meta name="author" content="ZWiley">
+      
+      
+        <link rel="canonical" href="https://zwiley.github.io/mybook/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/learn_vim_the_hard_way/">
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
+    
+    
+      
+        <title>Learn vim scrpt the hard way - ZWiley的随记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.1c3799f8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CUbuntu+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Ubuntu Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../.." title="ZWiley的随记" class="md-header__button md-logo" aria-label="ZWiley的随记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZWiley的随记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Learn vim scrpt the hard way
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zwiley/mybook/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="ZWiley的随记" class="md-nav__button md-logo" aria-label="ZWiley的随记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    ZWiley的随记
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zwiley/mybook/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        简介
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          C++
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="C++" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          C++
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/STL/" class="md-nav__link">
+        C++ STL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E7%BC%96%E8%AF%91%E5%BA%95%E5%B1%82/" class="md-nav__link">
+        C++编译底层
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        C++基础知识
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88_%E5%BC%82%E5%B8%B8%E6%9C%BA%E5%88%B6_%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2_RTTI/" class="md-nav__link">
+        C++智能指针
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="md-nav__link">
+        C++面向对象
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          计算机基础
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        操作系统
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="md-nav__link">
+        计算机网络
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        数据结构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" class="md-nav__link">
+        海量数据处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          基本手写代码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="基本手写代码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          基本手写代码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%9F%BA%E6%9C%AC%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81/%E5%9F%BA%E6%9C%AC%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E9%A2%98%E7%9B%AE/" class="md-nav__link">
+        常见基本代码
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          项目基础知识
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="项目基础知识" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          项目基础知识
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E5%8F%8A%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        Linux系统编程及基本命令
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/MySQL/" class="md-nav__link">
+        MySQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Redis/" class="md-nav__link">
+        Redis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Socket%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Socket编程
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          webserver项目
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="webserver项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          webserver项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/0%20%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        0 项目概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/1%20%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%E5%B0%81%E8%A3%85%E7%B1%BB/" class="md-nav__link">
+        1 线程同步机制封装类
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/2%20%E5%8D%8A%E5%90%8C%E6%AD%A5%E5%8D%8A%E5%8F%8D%E5%BA%94%E5%A0%86%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        2 半同步半反应堆线程池（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/3%20%E5%8D%8A%E5%90%8C%E6%AD%A5%E5%8D%8A%E5%8F%8D%E5%BA%94%E5%A0%86%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        3 半同步半反应堆线程池（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/4%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        4 http连接处理（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/5%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%AD%EF%BC%89/" class="md-nav__link">
+        5 http连接处理（中）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/6%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        6 http连接处理（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/7%20%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%84%E7%90%86%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        7 定时器处理非活动连接（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/8%20%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%84%E7%90%86%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        8 定时器处理非活动连接（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/9%20%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        9 日志系统（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/10%20%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        10 日志系统（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/11%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/" class="md-nav__link">
+        11 数据库连接池
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/12%20%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="md-nav__link">
+        12 常见问题
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/13%20%E9%A1%B9%E7%9B%AE%E6%A2%B3%E7%90%86/" class="md-nav__link">
+        13 项目梳理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../webserver/14%20%E9%A1%B9%E7%9B%AE%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="md-nav__link">
+        14 项目问题汇总
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          源码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="源码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          源码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB_sourcecode/" class="md-nav__link">
+        源码阅读
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          Muduo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Muduo" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          Muduo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2_1">
+          base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="base" data-md-level="3">
+        <label class="md-nav__title" for="__nav_7_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          base
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/base/1.%20%E6%97%B6%E9%97%B4_%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C_%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        时间_原子操作_异常
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/base/2.%20%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        线程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/base/3.%20%E7%BA%BF%E7%A8%8B2/" class="md-nav__link">
+        线程2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/base/4.%20%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        日志
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2_2">
+          net
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="net" data-md-level="3">
+        <label class="md-nav__title" for="__nav_7_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          net
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/1.%20EventLoop/" class="md-nav__link">
+        EventLoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/2.%20%E8%BF%9E%E6%8E%A5%E6%97%B6%E5%BA%8F/" class="md-nav__link">
+        连接时序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/3.%20%E5%85%B3%E9%97%AD%E6%97%B6%E5%BA%8F/" class="md-nav__link">
+        关闭时序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/4.%20Buffer/" class="md-nav__link">
+        Buffer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/5.%20callback/" class="md-nav__link">
+        callback
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/net/6.%20Client/" class="md-nav__link">
+        Client
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/0%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        服务器方案设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/1%20%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        基础知识
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/2%20%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/3%20muduo%E8%AF%A6%E7%BB%86%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        muduo详细运行流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/4%20muduo%E4%B8%AD%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/" class="md-nav__link">
+        muduo中的定时器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/5%20muduo%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        muduo中的线程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Muduo/6%20muduo%E4%B8%AD%E7%9A%84%E5%9B%9E%E8%B0%83/" class="md-nav__link">
+        muduo中的回调
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据库
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据库" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据库
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/getting_started_with_impala/" class="md-nav__link">
+        Getting started with impala
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" class="md-nav__link">
+        mysql必知必会
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/mysql%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E4%B8%8E%E6%9E%B6%E6%9E%84%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+        mysql性能调优与架构实践
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/Mysql%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="md-nav__link">
+        Mysql技术内幕InnoDB存储引擎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/redis%E5%AE%9E%E6%88%98/" class="md-nav__link">
+        Redis实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/redis%E6%B7%B1%E5%BA%A6%E5%8E%86%E9%99%A9%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E5%92%8C%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5/book/" class="md-nav__link">
+        Redis深度历险核心原理和应用实践
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="md-nav__link">
+        redis设计与实现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/%E4%B8%83%E5%91%A8%E4%B8%83%E6%95%B0%E6%8D%AE%E5%BA%93/" class="md-nav__link">
+        七周七数据库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql/" class="md-nav__link">
+        深入浅出mysql
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../database/%E9%AB%98%E6%80%A7%E8%83%BDmysql%E7%AC%AC%E4%B8%89%E7%89%88/" class="md-nav__link">
+        高性能mysql第三版
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          代码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="代码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          代码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E4%BB%A3%E7%A0%81%E5%A4%A7%E5%85%A8/" class="md-nav__link">
+        代码大全
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E4%BB%A3%E7%A0%81%E7%9A%84%E6%9C%AA%E6%9D%A5/" class="md-nav__link">
+        代码的未来
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" class="md-nav__link">
+        基本功
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E6%95%8F%E6%8D%B7%E6%8A%80%E8%83%BD%E4%BF%AE%E7%82%BC/" class="md-nav__link">
+        敏捷技能修炼
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%8497%E4%BB%B6%E4%BA%8B/" class="md-nav__link">
+        程序员应该知道的97件事
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        编写可读代码的艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E7%BC%96%E7%A8%8B%E5%8C%A0%E8%89%BA/" class="md-nav__link">
+        编程匠艺
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        领域驱动设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../code/codelife_%E4%B8%8D%E6%AD%A2%E4%BB%A3%E7%A0%81/" class="md-nav__link">
+        codelife_不止代码
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          调试技术
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="调试技术" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          调试技术
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E4%BF%AE%E7%82%BC%E4%B9%8B%E9%81%93/book/" class="md-nav__link">
+        软件调试修炼之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../debug/Effective_Debugging/" class="md-nav__link">
+        Effective Debugging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11">
+          前端
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="前端" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          前端
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/CSS_The_Missing_Manual/" class="md-nav__link">
+        CSS_The_Missing_Manual
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/reactjs_%E5%B0%8F%E4%B9%A6/" class="md-nav__link">
+        reactjs小书
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/es6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        ES6标准入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/jquery_pocket_reference/" class="md-nav__link">
+        jquery_pocket_reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frontend/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3bootstrap/" class="md-nav__link">
+        深入理解bootstrap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_12" type="checkbox" id="__nav_12" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_12">
+          golang
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="golang" data-md-level="1">
+        <label class="md-nav__title" for="__nav_12">
+          <span class="md-nav__icon md-icon"></span>
+          golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/1_the_go_programming_lauguage/" class="md-nav__link">
+        1 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/2_the_go_programming_lauguage/" class="md-nav__link">
+        2 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/3_the_go_programming_lauguage/" class="md-nav__link">
+        3 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/build-web-application-with-golang/" class="md-nav__link">
+        Build Web Application With Golang
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go101/book/" class="md-nav__link">
+        Go101
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/network-programming-with-go/book/" class="md-nav__link">
+        Network Programming with go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/building-microservices-with-go/book/" class="md-nav__link">
+        Building Microservices With Go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/building_restful_web_services_with_go/book/" class="md-nav__link">
+        Building Restful Web Services with Go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/concurrency-in-go/concurrency_in_go/" class="md-nav__link">
+        Concurrency In Go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go_in_action%28go%E8%AF%AD%E8%A8%80%E5%AE%9E%E6%88%98%29/" class="md-nav__link">
+        Go In Action(Go 实战)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E8%AF%AD%E8%A8%80%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        Go学习笔记语言详解
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/" class="md-nav__link">
+        Go学习笔记源码剖析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        go语言编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/the_way_to_go/book/" class="md-nav__link">
+        go book
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/advanced-go-programming-book/advanced-go-programming/" class="md-nav__link">
+        advanced-go-programming
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golang/go-build-web-applications/module1/go-build-web-applications/go-build-web-applications/" class="md-nav__link">
+        go-build-web-applications
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_13" type="checkbox" id="__nav_13" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_13">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="1">
+        <label class="md-nav__title" for="__nav_13">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/fluent_python/" class="md-nav__link">
+        Fluent Python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/Python_Microservices_Development/" class="md-nav__link">
+        Python Microservices Development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/high_performance_python/" class="md-nav__link">
+        High Performance Python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../python/python_%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Python网络编程
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" type="checkbox" id="__nav_14" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_14">
+          java
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="java" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          java
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../java/java-basic-introduction/" class="md-nav__link">
+        java basic introduction
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" type="checkbox" id="__nav_15" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15">
+          网络
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="网络" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          网络
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network/tcp_ip%E8%AF%A6%E8%A7%A3%E5%8D%B7%E4%B8%80/tcp_ip%E8%AF%A6%E8%A7%A3%E5%8D%B7%E4%B8%80/" class="md-nav__link">
+        TCP IP详解卷一
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_16" type="checkbox" id="__nav_16" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_16">
+          unix/linux
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="unix/linux" data-md-level="1">
+        <label class="md-nav__title" for="__nav_16">
+          <span class="md-nav__icon md-icon"></span>
+          unix/linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unix_linux/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Linux高性能服务器编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unix_linux/unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        unix编程艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unix_linux/unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%B8%80/" class="md-nav__link">
+        unix网络编程卷一
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unix_linux/unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        unix编程艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../unix_linux/unp/unp%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        UNP
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_17" type="checkbox" id="__nav_17" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_17">
+          分布式
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="分布式" data-md-level="1">
+        <label class="md-nav__title" for="__nav_17">
+          <span class="md-nav__icon md-icon"></span>
+          分布式
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%88%86%E5%B8%83%E5%BC%8F/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/" class="md-nav__link">
+        Kafka 权威指南
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86%E4%B8%8E%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        分布式框架原理与应用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%88%86%E5%B8%83%E5%BC%8F/%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        大规模分布式存储系统
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B7%B1%E5%85%A5%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+        深入分布式缓存从原理到实践
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_18" type="checkbox" id="__nav_18" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_18">
+          搜索引擎
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="搜索引擎" data-md-level="1">
+        <label class="md-nav__title" for="__nav_18">
+          <span class="md-nav__icon md-icon"></span>
+          搜索引擎
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/Elasticsearch%E5%AE%9E%E6%88%98/book/" class="md-nav__link">
+        Elasticsearch实战
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_19" type="checkbox" id="__nav_19" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_19">
+          容器
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="容器" data-md-level="1">
+        <label class="md-nav__title" for="__nav_19">
+          <span class="md-nav__icon md-icon"></span>
+          容器
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/%E7%8E%A9%E8%BD%ACKubernets-CloudMan/" class="md-nav__link">
+        玩转Kubernets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../devops/%E7%AC%AC%E4%B8%80%E6%9C%ACdocker%E4%B9%A6/" class="md-nav__link">
+        第一本docker书
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_20" type="checkbox" id="__nav_20" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_20">
+          开发工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_20">
+          <span class="md-nav__icon md-icon"></span>
+          开发工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../practical_vim/practical_vim/" class="md-nav__link">
+        Practical Vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/" class="md-nav__link">
+        Vim8文本处理实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Learn vim scrpt the hard way
+      </a>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pro_git/" class="md-nav__link">
+        Pro Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../Mastering_vim/" class="md-nav__link">
+        Mastering Vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mastering_vim_quickly/" class="md-nav__link">
+        Mastering Vim Quickly
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_21" type="checkbox" id="__nav_21" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_21">
+          网站架构微服务
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="网站架构微服务" data-md-level="1">
+        <label class="md-nav__title" for="__nav_21">
+          <span class="md-nav__icon md-icon"></span>
+          网站架构微服务
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/microservices_patterns_%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/book/" class="md-nav__link">
+        微服务架构设计模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E6%9E%B6%E6%9E%84/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        从0开始学架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/web_scalavility_for_startup_engineers/" class="md-nav__link">
+        web scalavility for startup engineers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/design_data_instensive_application/" class="md-nav__link">
+        design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/clean_architecture/" class="md-nav__link">
+        clean_architecture
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        微服务设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/2_design_data_instensive_application/" class="md-nav__link">
+        2_design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/3_design_data_instensive_application/" class="md-nav__link">
+        3_design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_22" type="checkbox" id="__nav_22" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_22">
+          软件工程/项目管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="软件工程/项目管理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_22">
+          <span class="md-nav__icon md-icon"></span>
+          软件工程/项目管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/" class="md-nav__link">
+        人月神话
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BB%A3%E7%A0%81%E4%B9%8B%E6%AE%87/" class="md-nav__link">
+        代码之殇
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%A7%A3%E6%9E%90%E6%9E%81%E9%99%90%E7%BC%96%E7%A8%8B-%E6%8B%A5%E6%8A%B1%E5%8F%98%E5%8C%96/" class="md-nav__link">
+        解析极限编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%BF%AE%E7%82%BC%E4%B9%8B%E9%81%93/" class="md-nav__link">
+        项目管理修炼之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BF%AE%E6%94%B9%E8%BD%AF%E4%BB%B6%E7%9A%84%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        修改软件的艺术
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_23" type="checkbox" id="__nav_23" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_23">
+          运维
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="运维" data-md-level="1">
+        <label class="md-nav__title" for="__nav_23">
+          <span class="md-nav__icon md-icon"></span>
+          运维
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BF%90%E7%BB%B4/linux%E9%9B%86%E7%BE%A4%E5%92%8C%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" class="md-nav__link">
+        linux集群和自动化运维
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E8%BF%90%E7%BB%B4/python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" class="md-nav__link">
+        python自动化运维
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_24" type="checkbox" id="__nav_24" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_24">
+          互联网
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="互联网" data-md-level="1">
+        <label class="md-nav__title" for="__nav_24">
+          <span class="md-nav__icon md-icon"></span>
+          互联网
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E4%BA%92%E8%81%94%E7%BD%91/%E6%88%91%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91%E6%96%B9%E6%B3%95%E8%AE%BA-%E5%91%A8%E9%B8%BF%E7%A5%8E/" class="md-nav__link">
+        我的互联网方法论-周鸿祎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E4%BA%92%E8%81%94%E7%BD%91/%E7%94%A8%E6%88%B7%E6%80%9D%E7%BB%B4/" class="md-nav__link">
+        用户思维
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_25" type="checkbox" id="__nav_25" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_25">
+          区块链
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="区块链" data-md-level="1">
+        <label class="md-nav__title" for="__nav_25">
+          <span class="md-nav__icon md-icon"></span>
+          区块链
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E6%8C%87%E5%8D%97%28blockchain_guide%29/" class="md-nav__link">
+        区块链技术指南
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_26" type="checkbox" id="__nav_26" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_26">
+          技术演讲
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="技术演讲" data-md-level="1">
+        <label class="md-nav__title" for="__nav_26">
+          <span class="md-nav__icon md-icon"></span>
+          技术演讲
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lecture/Gopher/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E6%88%98/note/" class="md-nav__link">
+        哔哩哔哩的go微服务实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lecture/Gopher/Go_Error/go%E4%B8%9A%E5%8A%A1%E5%9F%BA%E7%A1%80%E5%BA%93%E4%B9%8BError%26Context/" class="md-nav__link">
+        go业务基础库之Error&Context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lecture/Gopher/Go%E5%90%8C%E6%AD%A5%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/note/" class="md-nav__link">
+        Go同步和并发设计模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../lecture/%E6%8A%80%E6%9C%AF%E6%BC%94%E8%AE%B2/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E6%88%91%E8%BF%99%E6%8A%80%E6%9C%AF%E4%BA%8C%E5%8D%81%E5%B9%B4/" class="md-nav__link">
+        左耳朵耗子-我这技术二十年
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_27" type="checkbox" id="__nav_27" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_27">
+          金融理财
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="金融理财" data-md-level="1">
+        <label class="md-nav__title" for="__nav_27">
+          <span class="md-nav__icon md-icon"></span>
+          金融理财
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%87%91%E8%9E%8D%E7%90%86%E8%B4%A2/%E5%AE%9A%E6%8A%95%E5%8D%81%E5%B9%B4/" class="md-nav__link">
+        定投十年
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E9%87%91%E8%9E%8D%E7%90%86%E8%B4%A2/%E7%A9%B7%E6%9F%A5%E7%90%86%E5%AE%9D%E5%85%B8/" class="md-nav__link">
+        穷查理宝典
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_28" type="checkbox" id="__nav_28" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_28">
+          写作
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="写作" data-md-level="1">
+        <label class="md-nav__title" for="__nav_28">
+          <span class="md-nav__icon md-icon"></span>
+          写作
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%86%99%E4%BD%9C/%E5%88%B7%E5%B1%8F%E6%96%87%E6%A1%88%E5%86%99%E4%BD%9C%E6%8A%80%E5%B7%A7/" class="md-nav__link">
+        刷屏文案写作技巧
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_29" type="checkbox" id="__nav_29" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_29">
+          思维
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="思维" data-md-level="1">
+        <label class="md-nav__title" for="__nav_29">
+          <span class="md-nav__icon md-icon"></span>
+          思维
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E4%B8%93%E6%B3%A8%E5%8A%9B_%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80%E7%9A%84%E6%83%8A%E4%BA%BA%E5%8A%9B%E9%87%8F/" class="md-nav__link">
+        专注力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%B2%BE%E8%8B%B1%E8%BF%99%E6%A0%B7%E7%94%A8%E8%84%91%E4%B8%8D%E4%BC%9A%E7%B4%AF/" class="md-nav__link">
+        为什么精英这样用脑不会累
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%88%BB%E6%84%8F%E7%BB%83%E4%B9%A0/" class="md-nav__link">
+        刻意练习
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%A6%82%E4%BD%95%E6%83%B3%E5%88%B0%E5%8F%88%E5%81%9A%E5%88%B0/" class="md-nav__link">
+        如何想到又做到
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%81%93/" class="md-nav__link">
+        学习之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%AD%A6%E4%B9%A0%E5%8A%9B/" class="md-nav__link">
+        学习力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E6%89%B9%E5%88%A4%E6%80%A7%E6%80%9D%E7%BB%B4%E5%B7%A5%E5%85%B7/" class="md-nav__link">
+        批判性思维工具
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%80%9D%E7%BB%B4%E4%BF%AE%E7%82%BC%28%E5%BC%80%E5%8F%91%E8%AE%A4%E7%9F%A5%E6%BD%9C%E8%83%BD%E7%9A%84%E4%B9%9D%E5%A0%82%E8%AF%BE%29/" class="md-nav__link">
+        程序员的思维修炼
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E8%AE%A4%E7%9F%A5%E5%A4%A9%E6%80%A7/" class="md-nav__link">
+        认知天性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E8%B6%85%E6%95%88%E7%8E%87%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        超效率手册
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E8%AE%B0%E5%BF%86/" class="md-nav__link">
+        如何高效记忆
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E7%A7%91%E5%AD%A6%E5%AD%A6%E4%B9%A0/" class="md-nav__link">
+        科学学习
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E9%AB%98%E6%95%88%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%8445%E4%B8%AA%E4%B9%A0%E6%83%AF/" class="md-nav__link">
+        高效程序员的45个习惯
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_30" type="checkbox" id="__nav_30" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_30">
+          职场
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="职场" data-md-level="1">
+        <label class="md-nav__title" for="__nav_30">
+          <span class="md-nav__icon md-icon"></span>
+          职场
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/give_and_take/" class="md-nav__link">
+        give and take
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/the_effective_engineer/" class="md-nav__link">
+        the_effective_engineer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E5%85%89%E9%80%9F%E6%88%90%E9%95%BF/" class="md-nav__link">
+        光速成长
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E5%90%91%E4%B8%8A%E7%AE%A1%E7%90%86/" class="md-nav__link">
+        向上管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E6%88%90%E5%8A%9F%E5%8A%A8%E6%9C%BA%E4%B8%8E%E7%9B%AE%E6%A0%87/" class="md-nav__link">
+        成功动机与目标
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E7%95%AA%E8%8C%84%E5%B7%A5%E4%BD%9C%E6%B3%95/" class="md-nav__link">
+        番茄工作法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%81%86%E5%90%AC%E6%B2%9F%E9%80%9A%E5%AD%A6/" class="md-nav__link">
+        聆听沟通学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E7%9F%A5%E4%B9%8E%E8%81%8C%E4%BA%BA%E8%A7%89%E9%86%92/" class="md-nav__link">
+        知乎职人觉醒
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E7%9F%A5%E8%AF%86%E5%8F%98%E7%8E%B0/" class="md-nav__link">
+        知识变现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%81%86%E5%90%AC%E6%B2%9F%E9%80%9A%E5%AD%A6/" class="md-nav__link">
+        聆听沟通学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%81%8C%E5%9C%BA%E5%8A%A8%E7%89%A9%E8%BF%9B%E5%8C%96%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        职场动物进化手册
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%81%8C%E5%9C%BA%E8%A7%A3%E9%87%8A%E7%B3%BB/" class="md-nav__link">
+        职场解释系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%AF%B7%E5%81%9C%E6%AD%A2%E6%97%A0%E6%95%88%E5%8A%AA%E5%8A%9B/" class="md-nav__link">
+        请停止无效努力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E8%BD%AF%E6%8A%80%E8%83%BD/" class="md-nav__link">
+        软技能
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E9%AB%98%E6%95%8815%E6%B3%95%E5%88%99/" class="md-nav__link">
+        高效15法则
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E9%AB%98%E6%95%88%E6%B8%85%E5%8D%95%E5%B7%A5%E4%BD%9C%E6%B3%95/" class="md-nav__link">
+        高效清单工作法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../career/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" class="md-nav__link">
+        程序员的自我修养
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_31" type="checkbox" id="__nav_31" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_31">
+          心理学
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="心理学" data-md-level="1">
+        <label class="md-nav__title" for="__nav_31">
+          <span class="md-nav__icon md-icon"></span>
+          心理学
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E7%AB%A5%E5%B9%B4%E7%9A%84%E9%94%99%E5%90%97/" class="md-nav__link">
+        一切都是童年的错吗
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E4%BA%B2%E5%AF%86%E5%85%B3%E7%B3%BB/" class="md-nav__link">
+        亲密关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E6%83%85%E5%95%86/" class="md-nav__link">
+        情商
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E9%80%86%E5%95%86/" class="md-nav__link">
+        逆商
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E6%8B%96%E5%BB%B6%E5%BF%83%E7%90%86%E5%AD%A6/" class="md-nav__link">
+        拖延心理学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/" class="md-nav__link">
+        积极心理学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B/" class="md-nav__link">
+        自控力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B-%E5%AE%9E%E6%93%8D%E7%AF%87/" class="md-nav__link">
+        自控力-实操篇
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B-%E5%92%8C%E5%8E%8B%E5%8A%9B%E5%81%9A%E6%9C%8B%E5%8F%8B/" class="md-nav__link">
+        自控力:和压力做朋友
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E6%B4%BB%E5%87%BA%E6%9C%80%E4%B9%90%E8%A7%82%E7%9A%84%E8%87%AA%E5%B7%B1/" class="md-nav__link">
+        活出最乐观的自己
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E6%94%B9%E5%8F%98%E5%BF%83%E7%90%86%E5%AD%A6%E7%9A%8440%E9%A1%B9%E7%A0%94%E7%A9%B6/" class="md-nav__link">
+        改变心理学的40项研究
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E8%B6%85%E8%B6%8A%E8%87%AA%E5%8D%91/" class="md-nav__link">
+        超越自卑
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../psychology/%E5%8F%8D%E8%84%86%E5%BC%B1/" class="md-nav__link">
+        反脆弱
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_32" type="checkbox" id="__nav_32" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_32">
+          创业
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="创业" data-md-level="1">
+        <label class="md-nav__title" for="__nav_32">
+          <span class="md-nav__icon md-icon"></span>
+          创业
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../startup/hello_startup/" class="md-nav__link">
+        Hello Startup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../startup/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%85%AC%E5%BC%80%E8%AF%BE-%E5%A6%82%E4%BD%95%E5%88%9B%E4%B8%9A/" class="md-nav__link">
+        斯坦福公开课如何创业
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../startup/%E8%BF%90%E8%90%A5%E5%85%B6%E5%AE%9E%E5%BE%88%E7%AE%80%E5%8D%95/" class="md-nav__link">
+        运营其实很简单
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/zwiley/mybook/edit/master/docs/开发工具/learn_vim_the_hard_way.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<p><a href="http://learnvimscriptthehardway.onefloweroneworld.com/">http://learnvimscriptthehardway.onefloweroneworld.com/</a> 读书笔记，自定义vim 配置或者一些简单的 vim 插件需求。</p>
+<h1 id="_1">设置选项<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>主要有两种选项：布尔选项（值为&rdquo;on&rdquo;或&rdquo;off&rdquo;）和键值选项。</p>
+<ul>
+<li>布尔选项设置取消<code>:set number</code> <code>:set nonumber</code></li>
+<li>查看当前值: <code>:set number?</code></li>
+<li>键值选项: <code>:set numberwidth=10</code></li>
+</ul>
+<h1 id="_2">基本映射<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h1>
+<p><code>:map - x</code>让减号成为删除</p>
+<h1 id="_3">模式映射<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h1>
+<p>你可以使用nmap、vmap和imap命令分别指定映射仅在normal、visual、insert模式有效。</p>
+<ul>
+<li><code>:nmap - dd</code></li>
+<li><code>:nunmap - dd</code></li>
+</ul>
+<p>insert 模式: 比如我们想实现 ctrl+d 在 insert 模式下删除一行</p>
+<ul>
+<li><code>:imap &lt;c-d&gt; dd</code> 你会发现不起作用，因为没有进入 normal 模式</li>
+<li><code>:imap &lt;c-d&gt; &lt;esc&gt;dd</code> 在 insert 模式下输入 ctrl+d 从 esc 进入 normal 模式然后删除一行，但是没有回到 insert 模式</li>
+<li><code>:imap &lt;c-d&gt; &lt;esc&gt;ddi</code> 完成</li>
+</ul>
+<h1 id="_4">精确映射<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h1>
+<p><code>*map</code>系列命令的一个缺点就是存在递归的危险。另外一个是如果你安装一个插件，插件 映射了同一个按键为不同的行为，两者冲突，有一个映射就无效了。
+每一个_map系列的命令都有个对应的`_noremap`命令，包括：noremap/nnoremap、 vnoremap和inoremap。这些命令将不递归解释映射的内容。
+该何时使用这些非递归的映射命令呢？ 答案是： 任何时候 。</p>
+<h1 id="leaders">Leaders<a class="headerlink" href="#leaders" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>:let mapleader = &quot;,&quot;
+:nnoremap &lt;leader&gt;d dd
+</code></pre></div>
+
+<p><code>:let maplocalleader = "\\"</code> Vim有另外一个“leader”成为“local leader“ã这个leader用于那些只对某类文件 （如Python文件、HTML文件）而设置的映射。</p>
+<h1 id="vimrc">编辑你的Vimrc文件<a class="headerlink" href="#vimrc" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>&quot; 编辑映射
+:nnoremap &lt;leader&gt;ev :vsplit $MYVIMRC&lt;cr&gt;
+
+&quot; 重读映射配置
+:nnoremap &lt;leader&gt;sv :source $MYVIMRC&lt;cr&gt;
+</code></pre></div>
+
+<h1 id="abbreviations">Abbreviations<a class="headerlink" href="#abbreviations" title="Permanent link">&para;</a></h1>
+<p>Vim有个称为&rdquo;abbreviations&rdquo;的特性，与映射有点类似，但是它用于insert、replace和 command模式。</p>
+<ul>
+<li>用来纠错：<code>:iabbrev adn and</code> 在输入adn之后输入空格键，Vim会将其替换为and。</li>
+<li>用来缩写：<code>:iabbrev @@    steve@stevelosh.com</code></li>
+</ul>
+<h1 id="mappings">更多的Mappings<a class="headerlink" href="#mappings" title="Permanent link">&para;</a></h1>
+<p>看一个复杂的,一个有趣的mappings！你自己可以先试试。进入normal模式，移动光标至一个单词， 输入<leader>&ldquo;。Vim将那个单词用双引号包围！
+<code>:nnoremap &lt;leader&gt;" viw&lt;esc&gt;a"&lt;esc&gt;hbi"&lt;esc&gt;lel</code></p>
+<h1 id="_5">锻炼你的手指<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h1>
+<p>让我们先创建一个mapping，这个mapping会为你的左手减轻很多负担。
+<code>:inoremap jk &lt;esc&gt;</code>
+重新学习一个mapping的窍门就是强制将之前的按键设置为不可用，强迫自己使用新的mapping。执行下面的命令：
+<code>:inoremap &lt;esc&gt; &lt;nop&gt;</code></p>
+<h1 id="_6">本地缓冲区的选项设置和映射<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h1>
+<p>nnoremap命令中的<buffer>告诉Vim这个映射只在定义它的那个缓冲区中有效：
+<code>:nnoremap &lt;buffer&gt; &lt;leader&gt;x dd</code></p>
+<h1 id="_7">自动命令<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h1>
+<p><code>:autocmd BufNewFile * :write</code>
+创建空文件就写入到磁盘</p>
+<div class="codehilite"><pre><span></span><code>:autocmd BufNewFile * :write
+         ^          ^ ^
+         |          | |
+         |          | 要执行的命令
+         |          |
+         |          用于事件过滤的“模式（pattern）”
+         |
+         要监听的“事件”
+</code></pre></div>
+
+<p><code>:autocmd BufWritePre *.html :normal gg=G</code> BufWritePre，这个事件会在你保存任何字符到文件之前触发。保存 html 自动缩进</p>
+<p>多个事件：
+<code>:autocmd BufWritePre,BufRead *.html :normal gg=G</code></p>
+<p>FileType事件:
+这个事件会在Vim设置一个缓冲区的filetype的时候触发。
+通过 <code>&lt;localleader&gt;</code>给不同文件类型注释</p>
+<div class="codehilite"><pre><span></span><code>:autocmd FileType javascript nnoremap &lt;buffer&gt; &lt;localleader&gt;c I//&lt;esc&gt;
+:autocmd FileType python     nnoremap &lt;buffer&gt; &lt;localleader&gt;c I#&lt;esc&gt;
+</code></pre></div>
+
+<h1 id="_8">本地缓冲区缩写<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h1>
+<p><code>:iabbrev &lt;buffer&gt; --- &amp;mdash;</code></p>
+<p>自动命令和缩写:
+使用本地缓冲区的缩写和自动命令来创建一个简单的“snippet”系统。</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">:autocmd</span> <span class="nv">FileType</span> <span class="nv">python</span>     :<span class="nv">iabbrev</span> <span class="o">&lt;</span><span class="nv">buffer</span><span class="o">&gt;</span> <span class="nv">iff</span> <span class="k">if</span>:<span class="o">&lt;</span><span class="nv">left</span><span class="o">&gt;</span>
+<span class="nl">:autocmd</span> <span class="nv">FileType</span> <span class="nv">javascript</span> :<span class="nv">iabbrev</span> <span class="o">&lt;</span><span class="nv">buffer</span><span class="o">&gt;</span> <span class="nv">iff</span> <span class="k">if</span> <span class="ss">()</span><span class="o">&lt;</span><span class="nv">left</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<h1 id="_9">自动命令组<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h1>
+<p>Vim可能创建两个完全一样的自动命令,对于这个问题，Vim有一个解决方案。这个解决方案的第一步是将相关的自动命令收集起来放到一个已命名的组（groups）中。</p>
+<div class="codehilite"><pre><span></span><code><span class="n">augroup</span> <span class="n">filetype_html</span>
+    <span class="n">autocmd</span><span class="err">!</span>
+    <span class="n">autocmd</span> <span class="n">FileType</span> <span class="n">html</span> <span class="n">nnoremap</span> <span class="o">&lt;</span><span class="n">buffer</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">localleader</span><span class="o">&gt;</span><span class="n">f</span> <span class="n">Vatzf</span>
+<span class="n">augroup</span> <span class="kr">END</span>
+</code></pre></div>
+
+<p>当进入filetype_html这个组的时候，我们会立即清除这个组，然后定义一个自动命令，然后退出这个组。当我们再次加载~/.vimrc文件的时候，清除组命令会阻止Vim添加一个一模一样的自动命令。</p>
+<h1 id="operator-pending">Operator-Pending映射<a class="headerlink" href="#operator-pending" title="Permanent link">&para;</a></h1>
+<p>一个Operator（操作）就是一个命令，你可以在这个命令的后面输入一个Movement（移动）命令，然后Vim开始对文本执行前面的操作命令，这个操作命令会从你当前所在的位置开始执行，一直到这个移动命令会把你带到的位置结束。
+常用到的Operator有d，y和c。例如：</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>操作</th>
+<th>移动</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dw</td>
+<td>删除</td>
+<td>到下一个单词</td>
+</tr>
+<tr>
+<td>ci(</td>
+<td>修改</td>
+<td>在括号内</td>
+</tr>
+<tr>
+<td>yt,</td>
+<td>复制</td>
+<td>到逗号</td>
+</tr>
+</tbody>
+</table>
+<p><code>:onoremap p i(</code>  dp Vim会删除括号内的所有文字</p>
+<p>当你想搞清楚怎么定义一个新的operator-pending movement的时候，你可以从下面几个步骤来思考：</p>
+<ul>
+<li>在光标所在的位置开始。</li>
+<li>进入可视模式(charwise)。</li>
+<li>&hellip; 把映射的按键放到这里 &hellip;</li>
+<li>所有你想包含在movement中的文字都会被选中。
+    你所要做的工作就是在第三步中填上合适的按键。
+    <a href="http://learnvimscriptthehardway.onefloweroneworld.com/chapters/15.html">http://learnvimscriptthehardway.onefloweroneworld.com/chapters/15.html</a></li>
+</ul>
+<h1 id="operator-pending_1">更多Operator-Pending映射<a class="headerlink" href="#operator-pending_1" title="Permanent link">&para;</a></h1>
+<p>这个映射有些复杂。现在把你的光标放到文本中的某个位置（不要放到标题上）,然后敲击cih。Vim会删除光标所在章节的标题，然后保持在插入模式，这可以称为&rdquo;修改所在的标题(change inside heading)&rdquo;。
+<a href="http://learnvimscriptthehardway.onefloweroneworld.com/chapters/16.html">http://learnvimscriptthehardway.onefloweroneworld.com/chapters/16.html</a>
+<code>:onoremap ih :&lt;c-u&gt;execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"&lt;cr&gt;</code></p>
+<h1 id="_10">状态条<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>:set statusline=%f         &quot; 文件的路径
+:set statusline+=%=        &quot; 切换到右边
+:set statusline+=%l        &quot; 当前行
+:set statusline+=/         &quot; 分隔符
+:set statusline+=%L        &quot; 总行数
+</code></pre></div>
+
+<h1 id="_11">负责任的编码<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h1>
+<p>注释、分组、不要用缩写、练习并分享你的 vimrc</p>
+<h1 id="_12">变量<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>:let foo = &quot;bar&quot;
+:echo foo
+</code></pre></div>
+
+<p>你也可以将寄存器当作变量来读取和设置。执行下面的命令：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">:</span><span class="n">let</span><span class="w"> </span><span class="nv">@a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;hello!&quot;</span><span class="w"></span>
+</code></pre></div>
+
+<h1 id="_13">变量作用域<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h1>
+<p>在两个分隔的窗口中分别打开两个不同的文件，然后在其中一个窗口中执行下面的命令：</p>
+<div class="codehilite"><pre><span></span><code>:let b:hello = &quot;world&quot;
+:echo b:hello
+</code></pre></div>
+
+<p>当你在变量名中使用b:，这相当于告诉Vim变量hello是当前缓冲区的本地变量。
+当某个变量由一个字符和冒号开头，那么这就表示它是一个作用域变量。</p>
+<h1 id="_14">条件语句<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>:echom &quot;foo&quot; | echom &quot;bar&quot;
+</code></pre></div>
+
+<p>Vim会把它当作两个独立的命令。如果你看不到两行输出，执行:messages查看消息日志。</p>
+<div class="codehilite"><pre><span></span><code>:echom &quot;hello&quot; + 10
+:echom &quot;10hello&quot; + 10
+:echom &quot;hello10&quot; + 10
+</code></pre></div>
+
+<p>Vim不会把非空字符串当作&rdquo;truthy&rdquo;
+如有必要，Vim将强制转换变量(和字面量)的类型。在解析10 + &ldquo;20foo&rdquo;时，Vim将把 &ldquo;20foo&rdquo;转换成一个整数(20)然后加到10上去。
+以一个数字开头的字符串会被强制转换成数字，否则会转换成0
+在所有的强制转换完成后，当if的判断条件等于非零整数时，Vim会执行if语句体。</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">:if</span> <span class="mi">0</span>
+:    <span class="nv">echom</span> <span class="s2">&quot;</span><span class="s">if</span><span class="s2">&quot;</span>
+<span class="nl">:elseif</span> <span class="s2">&quot;</span><span class="s">nope!</span><span class="s2">&quot;</span>
+:    <span class="nv">echom</span> <span class="s2">&quot;</span><span class="s">elseif</span><span class="s2">&quot;</span>
+<span class="nl">:else</span>
+:    <span class="nv">echom</span> <span class="s2">&quot;</span><span class="s">finally!</span><span class="s2">&quot;</span>
+<span class="nl">:endif</span>
+</code></pre></div>
+
+<h1 id="_15">比较<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h1>
+<p>==的行为取决于用户的设置。是否 ignorecase。不要依赖用户配置。所以怎样才能适应这荒谬的现实？好在Vim有额外两种比较操作符来处理这个问题。
+<code>==?</code>是&rdquo;无论你怎么设都大小写不敏感&rdquo;比较操作符
+<code>==#</code>是&rdquo;无论你怎么设都大小写敏感&rdquo;比较操作符。
+当你比较整数时，这点小不同不会有什么影响。 不过，我还是建议每一次都使用大小写敏感的比较(即使不一定需要这么做)，好过该用的时候忘记用了</p>
+<h1 id="_16">函数<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h1>
+<p>没有作用域限制的Vimscript函数必须以一个大写字母开头！</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">:function</span> <span class="nv">Meow</span><span class="ss">()</span>
+:  <span class="nv">echom</span> <span class="s2">&quot;</span><span class="s">Meow!</span><span class="s2">&quot;</span>
+<span class="nl">:endfunction</span>
+
+<span class="nl">:function</span> <span class="nv">GetMeow</span><span class="ss">()</span>
+:  <span class="k">return</span> <span class="s2">&quot;</span><span class="s">Meow String!</span><span class="s2">&quot;</span>
+<span class="nl">:endfunction</span>
+</code></pre></div>
+
+<p>调用函数</p>
+<div class="codehilite"><pre><span></span><code>:call Meow()
+:call GetMeow()
+</code></pre></div>
+
+<p>当你使用call时，返回值会被丢弃， 所以这种方法仅在函数具有副作用时才有用。</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">:function</span> <span class="nv">TextwidthIsTooWide</span><span class="ss">()</span>
+:  <span class="k">if</span> <span class="o">&amp;</span><span class="nv">l</span>:<span class="nv">textwidth</span> <span class="o">&gt;</span># <span class="mi">80</span>
+:    <span class="k">return</span> <span class="mi">1</span>
+:  <span class="k">endif</span>
+<span class="nl">:endfunction</span>
+</code></pre></div>
+
+<p>一个Vimscript函数不返回一个值，它隐式返回0</p>
+<h1 id="_17">函数参数<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code>:function DisplayName(name)
+:  echom &quot;Hello!  My name is:&quot;
+:  echom a:name
+:endfunction
+</code></pre></div>
+
+<p>在写需要参数的Vimscript函数的时候，你总需要给参数加上前缀a:，来告诉Vim去参数作用域查找。</p>
+<div class="codehilite"><pre><span></span><code>:function Varg(...)
+:  echom a:0  &quot; 0表示参数个数
+:  echom a:1
+:  echo a:000  &quot; a:000将被设置为一个包括所有传递过来的额外参数的列表(list)。
+:endfunction
+
+:call Varg(&quot;a&quot;, &quot;b&quot;)
+</code></pre></div>
+
+<p>可变参数</p>
+<div class="codehilite"><pre><span></span><code>:function Varg2(foo, ...)
+:  echom a:foo
+:  echom a:0
+:  echom a:1
+:  echo a:000
+:endfunction
+
+:call Varg2(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;)
+</code></pre></div>
+
+<p>可以用具名参数引用。不能对参数变量重新赋值</p>
+<h1 id="_18">数字<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h1>
+<p>Vimscript有两种数值类型：Number和Float。一个Number是32位带符号整数。一个Float是浮点数。
+计算过程中也会转换类型</p>
+<h1 id="_19">字符串<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h1>
+<p>写Vimscript的时候，确信你清楚写下的每一个变量的类型。如果需要改变变量类型，你就得使用一个函数显式改变它， 即使那不是必要的。不要依赖Vim的强制转换，毕竟世上没有后悔药。</p>
+<ul>
+<li>连接：<code>:echom "Hello, " . "world"</code> ，</li>
+</ul>
+<p>Vim不会把非空字符串当作&rdquo;truthy&rdquo;</p>
+<h1 id="_20">字符串函数<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h1>
+<ul>
+<li>strlen(长度): <code>:echom strlen("foo")</code></li>
+<li>split(切割)：<code>:echo split("one two three")</code> <code>:echo split("one,two,three", ",")</code></li>
+<li>join(连接):<code>echo join(["foo", "bar"], "...")</code></li>
+<li>大小写转换: <code>:echom tolower("Foo")</code> <code>:echom toupper("Foo")</code></li>
+</ul>
+<h1 id="execute">Execute命令<a class="headerlink" href="#execute" title="Permanent link">&para;</a></h1>
+<p>execute命令用来把一个字符串当作Vimscript命令执行
+<code>:execute "echom 'Hello, world!'"</code>
+ 无需担心 execute 的危险性。</p>
+<h1 id="normal">Normal命令<a class="headerlink" href="#normal" title="Permanent link">&para;</a></h1>
+<p><code>:normal G</code>
+Vim将把你的光标移到当前文件的最后一行，就像是在normal模式里按下G。假如G 已经被映射了，我们可以用:
+<code>:normal! G</code>
+在写Vim脚本时，你应该总是使用normal!，永不使用normal。不要信任用户在~/.vimrc中的映射。</p>
+<h1 id="normal_1">执行normal!<a class="headerlink" href="#normal_1" title="Permanent link">&para;</a></h1>
+<p><code>:execute "normal! gg/foo\&lt;cr&gt;dd"</code>
+这将移动到文件的开头，查找foo的首次出现的地方，并删掉那一行。</p>
+<p><code>:execute "normal! mqA;\&lt;esc&gt;</code>q&rdquo;`</p>
+<p>这个命令做了什么？让我们掰开来讲：</p>
+<ul>
+<li>:execute &ldquo;normal! &hellip;&rdquo;：执行命令序列，一如它们是在normal模式下输入的，忽略所有映射， 并替换转义字符串。</li>
+<li>mq：保存当前位置到标记&rdquo;q&rdquo;。</li>
+<li>A：移动到当前行的末尾并在最后一个字符后进入insert模式。</li>
+<li>;：我们现在位于insert模式，所以仅仅是写入了一个&rdquo;;&rdquo;。</li>
+<li>\<esc>：这是一个表示Esc键的转义字符串序列，把我们带离insert模式。</li>
+<li>`q：回到标记&rdquo;q&rdquo;所在的位置。</li>
+</ul>
+<p>看上去有点绕，不过它真的很有用：它在当前行的末尾补上一个分号并保持光标不动。 在写Javascript，C或其他以分号作为语句分隔符的语言时，一旦忘记加上分号，这样的映射将助你一臂之力。</p>
+<h1 id="_21">基本的正则表达式<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h1>
+<p>高亮: 在开始之前，先花点时间讲讲搜索高亮，这样我们可以让匹配的内容更明显。hlsearch让Vim高亮文件中所有匹配项，incsearch则令Vim在你正打着搜索内容时就高亮下一个匹配项
+<code>:set hlsearch incsearch</code></p>
+<p>搜索: <code>:execute "normal! gg/print\&lt;cr&gt;"</code> 这将移动到文件顶部并开始搜索print，带我们到第一处匹配。</p>
+<p><code>:execute "normal! gg" . '/\vfor .+ in .+:' . "\&lt;cr&gt;"</code> 查找 python 的 for in 语句
+我们又一次把正则表达式放在单独的字面量字符串里，而这次我们用\v来引导模式。 这将告诉Vim使用它的&rdquo;very magic&rdquo;正则解析模式，而该模式就跟其他语言的非常相似。</p>
+<h1 id="grep-operator">实例研究：Grep 运算符(Operator)，第一部分<a class="headerlink" href="#grep-operator" title="Permanent link">&para;</a></h1>
+<p>简明扼要地说：:grep &hellip;将用你给的参数来运行一个外部的grep程序，解析结果，填充quickfix列表， 这样你就能在Vim里面跳转到对应结果。</p>
+<p>让我们简化我们的目标为&rdquo;创造一个映射来搜索光标下的词&rdquo;。这有用而且应该更简单，所以我们能更快得到可运行的成果。 目前我们将映射它到<leader>g。
+<code>:nnoremap &lt;leader&gt;g :grep -R something .&lt;cr&gt;</code></p>
+<p>首先我们需要搜索光标下的词，而不是something。执行下面的命令：</p>
+<p><code>:nnoremap &lt;leader&gt;g :grep -R &lt;cword&gt; .&lt;cr&gt;</code>
+现在试一下。<cword>是一个Vim的command-line模式的特殊变量， Vim会在执行命令之前把它替换为&rdquo;光标下面的那个词&rdquo;。</p>
+<p>你可以使用<cWORD>来得到大写形式(WORD)。
+我们将调用参数用引号括起来(防止危险的字符串)。执行这个命令：</p>
+<p><code>:nnoremap &lt;leader&gt;g :grep -R '&lt;cWORD&gt;' .&lt;cr&gt;</code></p>
+<p>搜索部分还有一个问题。在that&rsquo;s上尝试这个映射。它不会工作，因为词里的单引号与grep命令的单引号发生了冲突！
+为了解决问题，我们可以使用Vim的shellescape函数。 阅读:help escape()和:help shellescape()来看它是怎样工作的(真的很简单)。
+因为shellescape()要求Vim字符串，我们需要用execute动态创建命令。 首先执行下面命令来转换:grep映射到:execute &ldquo;&hellip;&rdquo;形式：</p>
+<p><code>:nnoremap &lt;leader&gt;g :execute "grep -R '&lt;cWORD&gt;' ."&lt;cr&gt;</code></p>
+<p>试一下并确信它可以工作。如果不行，找出拼写错误并改正。 然后执行下面的使用了shellescape的命令。</p>
+<p><code>:nnoremap &lt;leader&gt;g :execute "grep -R " . shellescape("&lt;cWORD&gt;") . " ."&lt;cr&gt;</code></p>
+<p>在一般的词比如foo上执行这个命令试试。它可以工作。再到一个带单引号的词，比如that&rsquo;s，上试试看。 它还是不行！为什么会这样？
+问题在于Vim在拓展命令行中的特殊变量，比如<cWORD>，的之前，就已经执行了shellescape()。 所以Vim shell-escaped了字面量字符串&rdquo;<cWORD>&ldquo;(什么都不做，除了给它添上一对单引号)并连接到我们的grep命令上。
+注意引号也是输出字符串的一部分。Vim把它作为shell命令参数保护了起来。
+为解决这个问题，我们将使用expand()函数来强制拓展<cWORD>为对应字符串， 抢在它被传递给shellescape之前。</p>
+<p><code>:nnoremap &lt;leader&gt;g :exe "grep -R " . shellescape(expand("&lt;cWORD&gt;")) . " ."&lt;cr&gt;</code></p>
+<p>在完成映射之前，还要处理一些小问题。首先，我们说过我们不想自动跳到第一个结果， 所以要用grep!替换掉grep。执行下面的命令：</p>
+<p><code>:nnoremap &lt;leader&gt;g :execute "grep! -R " . shellescape(expand("&lt;cWORD&gt;")) . " ."&lt;cr&gt;</code></p>
+<p>再一次试试，发现什么都没发生。Vim用结果填充了quickfix窗口，我们却无法打开。 执行下面的命令：</p>
+<p><code>:nnoremap &lt;leader&gt;g :execute "grep! -R " . shellescape(expand("&lt;cWORD&gt;")) . " ."&lt;cr&gt;:copen&lt;cr&gt;</code></p>
+<h1 id="grepoperator">实例研究：Grep运算符(Operator)，第二部分<a class="headerlink" href="#grepoperator" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code><span class="s2">&quot;</span><span class="s"> http://learnvimscriptthehardway.onefloweroneworld.com/chapters/33.html</span>
+
+<span class="s2">&quot;</span><span class="s"> 然后执行g@来以运算符的方式调用这个函数</span>
+<span class="nv">nnoremap</span> <span class="o">&lt;</span><span class="nv">leader</span><span class="o">&gt;</span><span class="nv">g</span> :<span class="nv">set</span> <span class="nv">operatorfunc</span><span class="o">=</span><span class="nv">GrepOperator</span><span class="o">&lt;</span><span class="nv">cr</span><span class="o">&gt;</span><span class="nv">g</span>@
+<span class="s2">&quot;</span><span class="s"> 还想要在visual模式下用到它。</span>
+<span class="s2">&quot;</span><span class="s"> 我们传递过去的visualMode()参数还没有讲过呢。 这个函数是Vim的内置函数，它返回一个单字符的字符串来表示visual模式的类型： </span><span class="s2">&quot;</span><span class="nv">v</span><span class="s2">&quot;</span><span class="s">代表字符宽度(characterwise)，</span><span class="s2">&quot;</span><span class="nv">V</span><span class="s2">&quot;</span><span class="s">代表行宽度(linewise)，Ctrl-v代表块宽度(blockwise)。</span>
+<span class="nv">vnoremap</span> <span class="o">&lt;</span><span class="nv">leader</span><span class="o">&gt;</span><span class="nv">g</span> :<span class="o">&lt;</span><span class="nv">c</span><span class="o">-</span><span class="nv">u</span><span class="o">&gt;</span><span class="k">call</span> <span class="nl">GrepOperator</span><span class="ss">(</span><span class="nv">visualmode</span><span class="ss">())</span><span class="o">&lt;</span><span class="nv">cr</span><span class="o">&gt;</span>
+
+<span class="nv">function</span><span class="o">!</span> <span class="nv">GrepOperator</span><span class="ss">(</span><span class="nv">type</span><span class="ss">)</span>
+    <span class="k">if</span> <span class="nv">a</span>:<span class="nv">type</span> <span class="o">==</span># <span class="s1">&#39;</span><span class="s">v</span><span class="s1">&#39;</span>
+        <span class="nv">normal</span><span class="o">!</span> `<span class="o">&lt;</span><span class="nv">v</span>`<span class="o">&gt;</span><span class="nv">y</span>
+    <span class="k">elseif</span> <span class="nv">a</span>:<span class="nv">type</span> <span class="o">==</span># <span class="s1">&#39;</span><span class="s">char</span><span class="s1">&#39;</span>
+        <span class="nv">normal</span><span class="o">!</span> `[<span class="nv">v</span>`]<span class="nv">y</span>
+    <span class="k">else</span>
+        <span class="k">return</span>
+    <span class="k">endif</span>
+
+    <span class="nv">silent</span> <span class="nv">execute</span> <span class="s2">&quot;</span><span class="s">grep! -R </span><span class="s2">&quot;</span> . <span class="nv">shellescape</span><span class="ss">(</span>@@<span class="ss">)</span> . <span class="s2">&quot;</span><span class="s"> .</span><span class="s2">&quot;</span>
+    <span class="nv">copen</span>
+<span class="nv">endfunction</span>
+</code></pre></div>
+
+<h1 id="grepoperator_1">实例研究：Grep运算符(Operator)，第三部分<a class="headerlink" href="#grepoperator_1" title="Permanent link">&para;</a></h1>
+<div class="codehilite"><pre><span></span><code><span class="n">nnoremap</span><span class="w"> </span><span class="o">&lt;</span><span class="n">leader</span><span class="o">&gt;</span><span class="n">g</span><span class="w"> </span><span class="o">:</span><span class="n">set</span><span class="w"> </span><span class="n">operatorfunc</span><span class="o">=</span><span class="n">GrepOperator</span><span class="o">&lt;</span><span class="n">cr</span><span class="o">&gt;</span><span class="n">g</span><span class="p">@</span><span class="w"></span>
+<span class="n">vnoremap</span><span class="w"> </span><span class="o">&lt;</span><span class="n">leader</span><span class="o">&gt;</span><span class="n">g</span><span class="w"> </span><span class="o">:&lt;</span><span class="n">c</span><span class="o">-</span><span class="n">u</span><span class="o">&gt;</span><span class="n">call</span><span class="w"> </span><span class="n">GrepOperator</span><span class="p">(</span><span class="n">visualmode</span><span class="p">())</span><span class="o">&lt;</span><span class="n">cr</span><span class="o">&gt;</span><span class="w"></span>
+
+<span class="k">function</span><span class="o">!</span><span class="w"> </span><span class="n">GrepOperator</span><span class="p">(</span><span class="k">type</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">saved_unnamed_register</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@@</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">a:</span><span class="k">type</span><span class="w"> </span><span class="o">==</span><span class="p">#</span><span class="w"> </span><span class="sc">&#39;v&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="n">normal</span><span class="o">!</span><span class="w"> </span><span class="err">`</span><span class="o">&lt;</span><span class="n">v</span><span class="err">`</span><span class="o">&gt;</span><span class="n">y</span><span class="w"></span>
+<span class="w">    </span><span class="n">elseif</span><span class="w"> </span><span class="nl">a:</span><span class="k">type</span><span class="w"> </span><span class="o">==</span><span class="p">#</span><span class="w"> </span><span class="p">&#39;</span><span class="n">char</span><span class="p">&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="n">normal</span><span class="o">!</span><span class="w"> </span><span class="err">`</span><span class="p">[</span><span class="n">v</span><span class="err">`</span><span class="p">]</span><span class="n">y</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"></span>
+<span class="w">    </span><span class="n">endif</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">silent</span><span class="w"> </span><span class="n">execute</span><span class="w"> </span><span class="s">&quot;grep! -R &quot;</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="n">shellescape</span><span class="p">(@@)</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="s">&quot; .&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">copen</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="p">@@</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saved_unnamed_register</span><span class="w"></span>
+<span class="k">endfunction</span><span class="w"></span>
+</code></pre></div>
+
+<p>我们在函数的开头和结尾加入了两个let语句。 第一个用一个变量保存@@中的内容，第二个则重新加载保存的内容。
+当写Vim插件时，你总是应该尽量在修改之前保存原来的设置和寄存器值，并在之后加载回去。 这样你就避免了让用户陷入恐慌的可能。</p>
+<p>我们的脚本在全局命名空间中创建了函数GrepOperator。 这大概不算什么大问题，但当你写Vimscript的时候，事前以免万一远好过事后万分歉意。</p>
+<div class="codehilite"><pre><span></span><code><span class="n">nnoremap</span><span class="w"> </span><span class="o">&lt;</span><span class="n">leader</span><span class="o">&gt;</span><span class="n">g</span><span class="w"> </span><span class="o">:</span><span class="n">set</span><span class="w"> </span><span class="n">operatorfunc</span><span class="o">=&lt;</span><span class="n">SID</span><span class="o">&gt;</span><span class="n">GrepOperator</span><span class="o">&lt;</span><span class="n">cr</span><span class="o">&gt;</span><span class="n">g</span><span class="p">@</span><span class="w"></span>
+<span class="n">vnoremap</span><span class="w"> </span><span class="o">&lt;</span><span class="n">leader</span><span class="o">&gt;</span><span class="n">g</span><span class="w"> </span><span class="o">:&lt;</span><span class="n">c</span><span class="o">-</span><span class="n">u</span><span class="o">&gt;</span><span class="n">call</span><span class="w"> </span><span class="o">&lt;</span><span class="n">SID</span><span class="o">&gt;</span><span class="n">GrepOperator</span><span class="p">(</span><span class="n">visualmode</span><span class="p">())</span><span class="o">&lt;</span><span class="n">cr</span><span class="o">&gt;</span><span class="w"></span>
+
+<span class="k">function</span><span class="o">!</span><span class="w"> </span><span class="nl">s:</span><span class="n">GrepOperator</span><span class="p">(</span><span class="k">type</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">saved_unnamed_register</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@@</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nl">a:</span><span class="k">type</span><span class="w"> </span><span class="o">==</span><span class="p">#</span><span class="w"> </span><span class="sc">&#39;v&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="n">normal</span><span class="o">!</span><span class="w"> </span><span class="err">`</span><span class="o">&lt;</span><span class="n">v</span><span class="err">`</span><span class="o">&gt;</span><span class="n">y</span><span class="w"></span>
+<span class="w">    </span><span class="n">elseif</span><span class="w"> </span><span class="nl">a:</span><span class="k">type</span><span class="w"> </span><span class="o">==</span><span class="p">#</span><span class="w"> </span><span class="p">&#39;</span><span class="n">char</span><span class="p">&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="n">normal</span><span class="o">!</span><span class="w"> </span><span class="err">`</span><span class="p">[</span><span class="n">v</span><span class="err">`</span><span class="p">]</span><span class="n">y</span><span class="w"></span>
+<span class="w">    </span><span class="k">else</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"></span>
+<span class="w">    </span><span class="n">endif</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">silent</span><span class="w"> </span><span class="n">execute</span><span class="w"> </span><span class="s">&quot;grep! -R &quot;</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="n">shellescape</span><span class="p">(@@)</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="s">&quot; .&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">copen</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="p">@@</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">saved_unnamed_register</span><span class="w"></span>
+<span class="k">endfunction</span><span class="w"></span>
+</code></pre></div>
+
+<p>脚本的前三行已经被改变了。首先，我们在函数名前增加前缀s:，这样它就会处于当前脚本的命名空间。
+我们也修改了映射，在GrepOperator前面添上<SID>，所以Vim才能找到这个函数。 如果我们不这样做，Vim会尝试在全局命名空间查找该函数，这是不可能找到的。</p>
+<h1 id="_22">列表<a class="headerlink" href="#_22" title="Permanent link">&para;</a></h1>
+<ul>
+<li>嵌套 <code>:echo ['foo', [3, 'bar']]</code></li>
+<li>索引：<code>:echo [0, [1, 2]][1]</code></li>
+<li>切割：<code>:echo ['a', 'b', 'c', 'd', 'e'][0:2]</code></li>
+<li>连接: <code>:echo ['a', 'b'] + ['c']</code></li>
+<li>函数：add, len, get, index, join, reverse</li>
+</ul>
+<h1 id="_23">循环<a class="headerlink" href="#_23" title="Permanent link">&para;</a></h1>
+<p>for 和 while</p>
+<div class="codehilite"><pre><span></span><code><span class="nl">:let</span> <span class="nv">c</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nl">:for</span> <span class="nv">i</span> <span class="nv">in</span> [<span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">4</span>]
+:  <span class="nv">let</span> <span class="nv">c</span> <span class="o">+=</span> <span class="nv">i</span>
+<span class="nl">:endfor</span>
+
+<span class="nl">:echom</span> <span class="nv">c</span>
+
+<span class="nl">:let</span> <span class="nv">c</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nl">:let</span> <span class="nv">total</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nl">:while</span> <span class="nv">c</span> <span class="o">&lt;=</span> <span class="mi">4</span>
+:  <span class="nv">let</span> <span class="nv">total</span> <span class="o">+=</span> <span class="nv">c</span>
+:  <span class="nv">let</span> <span class="nv">c</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="nl">:endwhile</span>
+
+<span class="nl">:echom</span> <span class="nv">total</span>
+</code></pre></div>
+
+<h1 id="_24">字典<a class="headerlink" href="#_24" title="Permanent link">&para;</a></h1>
+<p>我们讲到的最后一种Vimscript类型将是字典。 Vimscript字典类似于Python中的dict，Ruby中的hash，和Javascript中的object。
+字典用花括号创建。值是异质的，但键会被强制转换成字符串。</p>
+<ul>
+<li>定义：<code>:echo {'a': 1, 100: 'foo'}   " {'a':1,'100':'foo'}</code></li>
+<li>索引：<code>:echo {'a': 1, 100: 'foo',}['a']</code> or <code>:echo {'a': 1, 100: 'foo',}.a</code> ，支持括号和点查找</li>
+<li>
+<p>赋值和添加</p>
+<p>:let foo = {&lsquo;a&rsquo;: 1}
+:let foo.a = 100
+:let foo.b = 200
+:echo foo</p>
+</li>
+<li>
+<p>移除: 你不能移除字典中不存在的项</p>
+<p>:let test = remove(foo, &lsquo;a&rsquo;)
+:unlet foo.b
+:echo foo
+:echo test</p>
+</li>
+<li>
+<p>字典函数: get(), has_key(), items(), keys(), values()</p>
+</li>
+</ul>
+<h1 id="_25">切换<a class="headerlink" href="#_25" title="Permanent link">&para;</a></h1>
+<p><code>:nnoremap &lt;leader&gt;N :setlocal number!&lt;cr&gt;</code> 在normal模式中按下<leader>N看看。Vim将会在开启和关闭行号显示之间切换。</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">nnoremap</span> <span class="o">&lt;</span><span class="nv">leader</span><span class="o">&gt;</span><span class="nv">q</span> :<span class="k">call</span> <span class="nl">QuickfixToggle</span><span class="ss">()</span><span class="o">&lt;</span><span class="nv">cr</span><span class="o">&gt;</span>
+
+<span class="nv">let</span> <span class="nv">g</span>:<span class="nv">quickfix_is_open</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="nv">function</span><span class="o">!</span> <span class="nv">QuickfixToggle</span><span class="ss">()</span>
+    <span class="k">if</span> <span class="nv">g</span>:<span class="nv">quickfix_is_open</span>
+        <span class="nv">cclose</span>
+        <span class="nv">let</span> <span class="nv">g</span>:<span class="nv">quickfix_is_open</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="nv">execute</span> <span class="nv">g</span>:<span class="nv">quickfix_return_to_window</span> . <span class="s2">&quot;</span><span class="s">wincmd w</span><span class="s2">&quot;</span>
+    <span class="k">else</span>
+        <span class="nv">let</span> <span class="nv">g</span>:<span class="nv">quickfix_return_to_window</span> <span class="o">=</span> <span class="nv">winnr</span><span class="ss">()</span>
+        <span class="nv">copen</span>
+        <span class="nv">let</span> <span class="nv">g</span>:<span class="nv">quickfix_is_open</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">endif</span>
+<span class="nv">endfunction</span>
+</code></pre></div>
+
+<h1 id="_26">函数式编程<a class="headerlink" href="#_26" title="Permanent link">&para;</a></h1>
+<p>如果你用过Python，Ruby或Javascript，甚或Lisp，Scheme，Clojure或Haskell，
+你应该会觉得把函数作为变量类型，用不可变的状态作为数据结构是平常的事。</p>
+<h3 id="_27">不可变的数据结构<a class="headerlink" href="#_27" title="Permanent link">&para;</a></h3>
+<p>不幸的是，Vim没有类似于Clojure内置的vector和map那样的不可变集合， 不过通过一些辅助函数，我们可以在一定程度上模拟出来。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="nf">! Sorted</span><span class="p">(</span>l<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">new_list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">call</span><span class="w"> </span><span class="nb">sort</span><span class="p">(</span><span class="n">new_list</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">new_list</span><span class="w"></span>
+<span class="n">endfunction</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="_28">作为变量的函数<a class="headerlink" href="#_28" title="Permanent link">&para;</a></h3>
+<p>Vimscript支持使用变量储存函数，但是相关的语法有点愚钝。执行下面的命令：</p>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="n">let</span><span class="w"> </span><span class="n">Myfunc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">function</span><span class="p">(</span><span class="s2">&quot;Append&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">:</span><span class="n">echo</span><span class="w"> </span><span class="n">Myfunc</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"></span>
+</code></pre></div>
+
+<h3 id="_29">高阶函数<a class="headerlink" href="#_29" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="nf">! Mapped</span><span class="p">(</span>fn, l<span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">let</span><span class="w"> </span><span class="n">new_list</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">l</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">call</span><span class="w"> </span><span class="n">map</span><span class="p">(</span><span class="n">new_list</span><span class="p">,</span><span class="w"> </span><span class="nb">string</span><span class="p">(</span><span class="n">a</span><span class="p">:</span><span class="n">fn</span><span class="p">)</span><span class="w"> </span><span class="p">.</span><span class="w"> </span><span class="s">&#39;(v:val)&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">new_list</span><span class="w"></span>
+<span class="n">endfunction</span><span class="w"></span>
+</code></pre></div>
+
+<h1 id="_30">路径<a class="headerlink" href="#_30" title="Permanent link">&para;</a></h1>
+<h3 id="_31">绝对路径<a class="headerlink" href="#_31" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>:echom expand(&#39;%&#39;)
+:echom expand(&#39;%:p&#39;)
+:echom fnamemodify(&#39;foo.txt&#39;, &#39;:p&#39;)
+</code></pre></div>
+
+<h3 id="_32">列出文件<a class="headerlink" href="#_32" title="Permanent link">&para;</a></h3>
+<div class="codehilite"><pre><span></span><code>:echo globpath(&#39;.&#39;, &#39;*&#39;) &quot; Vim将输出当前目录下所有的文件和文件夹
+:echo split(globpath(&#39;.&#39;, &#39;**&#39;), &#39;\n&#39;)  &quot; 你可以用**递归地列出文件。执行这个命令：
+</code></pre></div>
+
+<h1 id="_33">创建一个完整的插件<a class="headerlink" href="#_33" title="Permanent link">&para;</a></h1>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="页脚">
+      
+        
+        <a href="../vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Vim8文本处理实战" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Vim8文本处理实战
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../pro_git/" class="md-footer__link md-footer__link--next" aria-label="下一页: Pro Git" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              Pro Git
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["instant"], "search": "../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>

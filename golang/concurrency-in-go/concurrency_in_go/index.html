@@ -1,0 +1,5571 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="ZWiley的随记">
+      
+      
+        <meta name="author" content="ZWiley">
+      
+      
+        <link rel="canonical" href="https://zwiley.github.io/mybook/golang/concurrency-in-go/concurrency_in_go/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
+    
+    
+      
+        <title>Concurrency In Go - ZWiley的随记</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c3799f8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CUbuntu+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Ubuntu Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-an-introduction-to-concurrency" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="ZWiley的随记" class="md-header__button md-logo" aria-label="ZWiley的随记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            ZWiley的随记
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Concurrency In Go
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="清空当前内容" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/zwiley/mybook/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="ZWiley的随记" class="md-nav__button md-logo" aria-label="ZWiley的随记" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    ZWiley的随记
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/zwiley/mybook/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        简介
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          C++
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="C++" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          C++
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/STL/" class="md-nav__link">
+        C++ STL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E7%BC%96%E8%AF%91%E5%BA%95%E5%B1%82/" class="md-nav__link">
+        C++编译底层
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        C++基础知识
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88_%E5%BC%82%E5%B8%B8%E6%9C%BA%E5%88%B6_%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2_RTTI/" class="md-nav__link">
+        C++智能指针
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E7%A1%80%E8%AF%AD%E8%A8%80/C%2B%2B%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/" class="md-nav__link">
+        C++面向对象
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          计算机基础
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="计算机基础" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          计算机基础
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        操作系统
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="md-nav__link">
+        计算机网络
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="md-nav__link">
+        数据结构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/%E6%B5%B7%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" class="md-nav__link">
+        海量数据处理
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          基本手写代码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="基本手写代码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          基本手写代码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%9F%BA%E6%9C%AC%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81/%E5%9F%BA%E6%9C%AC%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81%E9%A2%98%E7%9B%AE/" class="md-nav__link">
+        常见基本代码
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          项目基础知识
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="项目基础知识" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          项目基础知识
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Linux%E7%B3%BB%E7%BB%9F%E7%BC%96%E7%A8%8B%E5%8F%8A%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4/" class="md-nav__link">
+        Linux系统编程及基本命令
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/MySQL/" class="md-nav__link">
+        MySQL
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Redis/" class="md-nav__link">
+        Redis
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%A1%B9%E7%9B%AE%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/Socket%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Socket编程
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          webserver项目
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="webserver项目" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          webserver项目
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/0%20%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%BF%B0/" class="md-nav__link">
+        0 项目概述
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/1%20%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5%E6%9C%BA%E5%88%B6%E5%B0%81%E8%A3%85%E7%B1%BB/" class="md-nav__link">
+        1 线程同步机制封装类
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/2%20%E5%8D%8A%E5%90%8C%E6%AD%A5%E5%8D%8A%E5%8F%8D%E5%BA%94%E5%A0%86%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        2 半同步半反应堆线程池（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/3%20%E5%8D%8A%E5%90%8C%E6%AD%A5%E5%8D%8A%E5%8F%8D%E5%BA%94%E5%A0%86%E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        3 半同步半反应堆线程池（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/4%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        4 http连接处理（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/5%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%AD%EF%BC%89/" class="md-nav__link">
+        5 http连接处理（中）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/6%20http%E8%BF%9E%E6%8E%A5%E5%A4%84%E7%90%86%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        6 http连接处理（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/7%20%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%84%E7%90%86%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        7 定时器处理非活动连接（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/8%20%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%84%E7%90%86%E9%9D%9E%E6%B4%BB%E5%8A%A8%E8%BF%9E%E6%8E%A5%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        8 定时器处理非活动连接（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/9%20%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8A%EF%BC%89/" class="md-nav__link">
+        9 日志系统（上）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/10%20%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F%EF%BC%88%E4%B8%8B%EF%BC%89/" class="md-nav__link">
+        10 日志系统（下）
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/11%20%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%9E%E6%8E%A5%E6%B1%A0/" class="md-nav__link">
+        11 数据库连接池
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/12%20%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" class="md-nav__link">
+        12 常见问题
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/13%20%E9%A1%B9%E7%9B%AE%E6%A2%B3%E7%90%86/" class="md-nav__link">
+        13 项目梳理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webserver/14%20%E9%A1%B9%E7%9B%AE%E9%97%AE%E9%A2%98%E6%B1%87%E6%80%BB/" class="md-nav__link">
+        14 项目问题汇总
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          源码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="源码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          源码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB_sourcecode/" class="md-nav__link">
+        源码阅读
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2">
+          Muduo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Muduo" data-md-level="2">
+        <label class="md-nav__title" for="__nav_7_2">
+          <span class="md-nav__icon md-icon"></span>
+          Muduo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2_1">
+          base
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="base" data-md-level="3">
+        <label class="md-nav__title" for="__nav_7_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          base
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/base/1.%20%E6%97%B6%E9%97%B4_%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C_%E5%BC%82%E5%B8%B8/" class="md-nav__link">
+        时间_原子操作_异常
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/base/2.%20%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        线程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/base/3.%20%E7%BA%BF%E7%A8%8B2/" class="md-nav__link">
+        线程2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/base/4.%20%E6%97%A5%E5%BF%97/" class="md-nav__link">
+        日志
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7_2_2">
+          net
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="net" data-md-level="3">
+        <label class="md-nav__title" for="__nav_7_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          net
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/1.%20EventLoop/" class="md-nav__link">
+        EventLoop
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/2.%20%E8%BF%9E%E6%8E%A5%E6%97%B6%E5%BA%8F/" class="md-nav__link">
+        连接时序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/3.%20%E5%85%B3%E9%97%AD%E6%97%B6%E5%BA%8F/" class="md-nav__link">
+        关闭时序
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/4.%20Buffer/" class="md-nav__link">
+        Buffer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/5.%20callback/" class="md-nav__link">
+        callback
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/net/6.%20Client/" class="md-nav__link">
+        Client
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/0%20%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B9%E6%A1%88%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        服务器方案设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/1%20%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" class="md-nav__link">
+        基础知识
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/2%20%E6%80%BB%E4%BD%93%E8%A7%A3%E6%9E%90/" class="md-nav__link">
+        总体解析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/3%20muduo%E8%AF%A6%E7%BB%86%E8%BF%90%E8%A1%8C%E6%B5%81%E7%A8%8B/" class="md-nav__link">
+        muduo详细运行流程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/4%20muduo%E4%B8%AD%E7%9A%84%E5%AE%9A%E6%97%B6%E5%99%A8/" class="md-nav__link">
+        muduo中的定时器
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/5%20muduo%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B/" class="md-nav__link">
+        muduo中的线程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Muduo/6%20muduo%E4%B8%AD%E7%9A%84%E5%9B%9E%E8%B0%83/" class="md-nav__link">
+        muduo中的回调
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8">
+          数据库
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="数据库" data-md-level="1">
+        <label class="md-nav__title" for="__nav_8">
+          <span class="md-nav__icon md-icon"></span>
+          数据库
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/getting_started_with_impala/" class="md-nav__link">
+        Getting started with impala
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/mysql%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A/" class="md-nav__link">
+        mysql必知必会
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/mysql%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98%E4%B8%8E%E6%9E%B6%E6%9E%84%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+        mysql性能调优与架构实践
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/Mysql%E6%8A%80%E6%9C%AF%E5%86%85%E5%B9%95InnoDB%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E/" class="md-nav__link">
+        Mysql技术内幕InnoDB存储引擎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/redis%E5%AE%9E%E6%88%98/" class="md-nav__link">
+        Redis实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/redis%E6%B7%B1%E5%BA%A6%E5%8E%86%E9%99%A9%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E5%92%8C%E5%BA%94%E7%94%A8%E5%AE%9E%E8%B7%B5/book/" class="md-nav__link">
+        Redis深度历险核心原理和应用实践
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/redis%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="md-nav__link">
+        redis设计与实现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/%E4%B8%83%E5%91%A8%E4%B8%83%E6%95%B0%E6%8D%AE%E5%BA%93/" class="md-nav__link">
+        七周七数据库
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BAmysql/" class="md-nav__link">
+        深入浅出mysql
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../database/%E9%AB%98%E6%80%A7%E8%83%BDmysql%E7%AC%AC%E4%B8%89%E7%89%88/" class="md-nav__link">
+        高性能mysql第三版
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_9" type="checkbox" id="__nav_9" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_9">
+          代码
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="代码" data-md-level="1">
+        <label class="md-nav__title" for="__nav_9">
+          <span class="md-nav__icon md-icon"></span>
+          代码
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E4%BB%A3%E7%A0%81%E5%A4%A7%E5%85%A8/" class="md-nav__link">
+        代码大全
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E4%BB%A3%E7%A0%81%E7%9A%84%E6%9C%AA%E6%9D%A5/" class="md-nav__link">
+        代码的未来
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" class="md-nav__link">
+        基本功
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E6%95%8F%E6%8D%B7%E6%8A%80%E8%83%BD%E4%BF%AE%E7%82%BC/" class="md-nav__link">
+        敏捷技能修炼
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BA%94%E8%AF%A5%E7%9F%A5%E9%81%93%E7%9A%8497%E4%BB%B6%E4%BA%8B/" class="md-nav__link">
+        程序员应该知道的97件事
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E7%BC%96%E5%86%99%E5%8F%AF%E8%AF%BB%E4%BB%A3%E7%A0%81%E7%9A%84%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        编写可读代码的艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E7%BC%96%E7%A8%8B%E5%8C%A0%E8%89%BA/" class="md-nav__link">
+        编程匠艺
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        领域驱动设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../code/codelife_%E4%B8%8D%E6%AD%A2%E4%BB%A3%E7%A0%81/" class="md-nav__link">
+        codelife_不止代码
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_10" type="checkbox" id="__nav_10" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_10">
+          调试技术
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="调试技术" data-md-level="1">
+        <label class="md-nav__title" for="__nav_10">
+          <span class="md-nav__icon md-icon"></span>
+          调试技术
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../debug/%E8%BD%AF%E4%BB%B6%E8%B0%83%E8%AF%95%E4%BF%AE%E7%82%BC%E4%B9%8B%E9%81%93/book/" class="md-nav__link">
+        软件调试修炼之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../debug/Effective_Debugging/" class="md-nav__link">
+        Effective Debugging
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_11" type="checkbox" id="__nav_11" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_11">
+          前端
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="前端" data-md-level="1">
+        <label class="md-nav__title" for="__nav_11">
+          <span class="md-nav__icon md-icon"></span>
+          前端
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../frontend/CSS_The_Missing_Manual/" class="md-nav__link">
+        CSS_The_Missing_Manual
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../frontend/reactjs_%E5%B0%8F%E4%B9%A6/" class="md-nav__link">
+        reactjs小书
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../frontend/es6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/" class="md-nav__link">
+        ES6标准入门
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../frontend/jquery_pocket_reference/" class="md-nav__link">
+        jquery_pocket_reference
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../frontend/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3bootstrap/" class="md-nav__link">
+        深入理解bootstrap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_12" type="checkbox" id="__nav_12" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_12">
+          golang
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="golang" data-md-level="1">
+        <label class="md-nav__title" for="__nav_12">
+          <span class="md-nav__icon md-icon"></span>
+          golang
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../1_the_go_programming_lauguage/" class="md-nav__link">
+        1 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2_the_go_programming_lauguage/" class="md-nav__link">
+        2 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../3_the_go_programming_lauguage/" class="md-nav__link">
+        3 The Go Programming Language
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../build-web-application-with-golang/" class="md-nav__link">
+        Build Web Application With Golang
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go101/book/" class="md-nav__link">
+        Go101
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../network-programming-with-go/book/" class="md-nav__link">
+        Network Programming with go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../building-microservices-with-go/book/" class="md-nav__link">
+        Building Microservices With Go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../building_restful_web_services_with_go/book/" class="md-nav__link">
+        Building Restful Web Services with Go
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Concurrency In Go
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Concurrency In Go
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deadlocks-livelocks-and-starvation" class="md-nav__link">
+    Deadlocks, Livelocks, and Starvation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#determining-concurrency-safety" class="md-nav__link">
+    Determining Concurrency Safety
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplicity-in-the-face-of-complexity" class="md-nav__link">
+    Simplicity in the Face of Complexity
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go_in_action%28go%E8%AF%AD%E8%A8%80%E5%AE%9E%E6%88%98%29/" class="md-nav__link">
+        Go In Action(Go 实战)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E8%AF%AD%E8%A8%80%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        Go学习笔记语言详解
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E6%BA%90%E7%A0%81%E5%89%96%E6%9E%90/" class="md-nav__link">
+        Go学习笔记源码剖析
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go%E8%AF%AD%E8%A8%80%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        go语言编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../the_way_to_go/book/" class="md-nav__link">
+        go book
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../advanced-go-programming-book/advanced-go-programming/" class="md-nav__link">
+        advanced-go-programming
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../go-build-web-applications/module1/go-build-web-applications/go-build-web-applications/" class="md-nav__link">
+        go-build-web-applications
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_13" type="checkbox" id="__nav_13" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_13">
+          python
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="python" data-md-level="1">
+        <label class="md-nav__title" for="__nav_13">
+          <span class="md-nav__icon md-icon"></span>
+          python
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../python/fluent_python/" class="md-nav__link">
+        Fluent Python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../python/Python_Microservices_Development/" class="md-nav__link">
+        Python Microservices Development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../python/high_performance_python/" class="md-nav__link">
+        High Performance Python
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../python/python_%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Python网络编程
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_14" type="checkbox" id="__nav_14" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_14">
+          java
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="java" data-md-level="1">
+        <label class="md-nav__title" for="__nav_14">
+          <span class="md-nav__icon md-icon"></span>
+          java
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../java/java-basic-introduction/" class="md-nav__link">
+        java basic introduction
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_15" type="checkbox" id="__nav_15" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_15">
+          网络
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="网络" data-md-level="1">
+        <label class="md-nav__title" for="__nav_15">
+          <span class="md-nav__icon md-icon"></span>
+          网络
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../network/tcp_ip%E8%AF%A6%E8%A7%A3%E5%8D%B7%E4%B8%80/tcp_ip%E8%AF%A6%E8%A7%A3%E5%8D%B7%E4%B8%80/" class="md-nav__link">
+        TCP IP详解卷一
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_16" type="checkbox" id="__nav_16" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_16">
+          unix/linux
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="unix/linux" data-md-level="1">
+        <label class="md-nav__title" for="__nav_16">
+          <span class="md-nav__icon md-icon"></span>
+          unix/linux
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../unix_linux/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/Linux%E9%AB%98%E6%80%A7%E8%83%BD%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BC%96%E7%A8%8B/" class="md-nav__link">
+        Linux高性能服务器编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../unix_linux/unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        unix编程艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../unix_linux/unix%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B%E5%8D%B7%E4%B8%80/" class="md-nav__link">
+        unix网络编程卷一
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../unix_linux/unix%E7%BC%96%E7%A8%8B%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        unix编程艺术
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../unix_linux/unp/unp%E7%AC%94%E8%AE%B0/" class="md-nav__link">
+        UNP
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_17" type="checkbox" id="__nav_17" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_17">
+          分布式
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="分布式" data-md-level="1">
+        <label class="md-nav__title" for="__nav_17">
+          <span class="md-nav__icon md-icon"></span>
+          分布式
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%88%86%E5%B8%83%E5%BC%8F/Kafka%E6%9D%83%E5%A8%81%E6%8C%87%E5%8D%97/" class="md-nav__link">
+        Kafka 权威指南
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%88%86%E5%B8%83%E5%BC%8F/%E5%88%86%E5%B8%83%E5%BC%8F%E6%A1%86%E6%9E%B6%E5%8E%9F%E7%90%86%E4%B8%8E%E5%BA%94%E7%94%A8/" class="md-nav__link">
+        分布式框架原理与应用
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%88%86%E5%B8%83%E5%BC%8F/%E5%A4%A7%E8%A7%84%E6%A8%A1%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/" class="md-nav__link">
+        大规模分布式存储系统
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%88%86%E5%B8%83%E5%BC%8F/%E6%B7%B1%E5%85%A5%E5%88%86%E5%B8%83%E5%BC%8F%E7%BC%93%E5%AD%98%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E8%B7%B5/" class="md-nav__link">
+        深入分布式缓存从原理到实践
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_18" type="checkbox" id="__nav_18" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_18">
+          搜索引擎
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="搜索引擎" data-md-level="1">
+        <label class="md-nav__title" for="__nav_18">
+          <span class="md-nav__icon md-icon"></span>
+          搜索引擎
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/Elasticsearch%E5%AE%9E%E6%88%98/book/" class="md-nav__link">
+        Elasticsearch实战
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_19" type="checkbox" id="__nav_19" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_19">
+          容器
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="容器" data-md-level="1">
+        <label class="md-nav__title" for="__nav_19">
+          <span class="md-nav__icon md-icon"></span>
+          容器
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/%E7%8E%A9%E8%BD%ACKubernets-CloudMan/" class="md-nav__link">
+        玩转Kubernets
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../devops/%E7%AC%AC%E4%B8%80%E6%9C%ACdocker%E4%B9%A6/" class="md-nav__link">
+        第一本docker书
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_20" type="checkbox" id="__nav_20" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_20">
+          开发工具
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="开发工具" data-md-level="1">
+        <label class="md-nav__title" for="__nav_20">
+          <span class="md-nav__icon md-icon"></span>
+          开发工具
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/practical_vim/practical_vim/" class="md-nav__link">
+        Practical Vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/vim8%E6%96%87%E6%9C%AC%E5%A4%84%E7%90%86%E5%AE%9E%E6%88%98/" class="md-nav__link">
+        Vim8文本处理实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/learn_vim_the_hard_way/" class="md-nav__link">
+        Learn vim scrpt the hard way
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/pro_git/" class="md-nav__link">
+        Pro Git
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/Mastering_vim/" class="md-nav__link">
+        Mastering Vim
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/mastering_vim_quickly/" class="md-nav__link">
+        Mastering Vim Quickly
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_21" type="checkbox" id="__nav_21" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_21">
+          网站架构微服务
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="网站架构微服务" data-md-level="1">
+        <label class="md-nav__title" for="__nav_21">
+          <span class="md-nav__icon md-icon"></span>
+          网站架构微服务
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/microservices_patterns_%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/book/" class="md-nav__link">
+        微服务架构设计模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E6%9E%B6%E6%9E%84/%E4%BB%8E0%E5%BC%80%E5%A7%8B%E5%AD%A6%E6%9E%B6%E6%9E%84/" class="md-nav__link">
+        从0开始学架构
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/web_scalavility_for_startup_engineers/" class="md-nav__link">
+        web scalavility for startup engineers
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/design_data_instensive_application/" class="md-nav__link">
+        design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/clean_architecture/" class="md-nav__link">
+        clean_architecture
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E8%AE%BE%E8%AE%A1/" class="md-nav__link">
+        微服务设计
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/2_design_data_instensive_application/" class="md-nav__link">
+        2_design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%BD%91%E7%AB%99%E6%9E%B6%E6%9E%84%E5%BE%AE%E6%9C%8D%E5%8A%A1/3_design_data_instensive_application/" class="md-nav__link">
+        3_design_data_instensive_application
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_22" type="checkbox" id="__nav_22" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_22">
+          软件工程/项目管理
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="软件工程/项目管理" data-md-level="1">
+        <label class="md-nav__title" for="__nav_22">
+          <span class="md-nav__icon md-icon"></span>
+          软件工程/项目管理
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BA%BA%E6%9C%88%E7%A5%9E%E8%AF%9D/" class="md-nav__link">
+        人月神话
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BB%A3%E7%A0%81%E4%B9%8B%E6%AE%87/" class="md-nav__link">
+        代码之殇
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E8%A7%A3%E6%9E%90%E6%9E%81%E9%99%90%E7%BC%96%E7%A8%8B-%E6%8B%A5%E6%8A%B1%E5%8F%98%E5%8C%96/" class="md-nav__link">
+        解析极限编程
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86%E4%BF%AE%E7%82%BC%E4%B9%8B%E9%81%93/" class="md-nav__link">
+        项目管理修炼之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B_%E9%A1%B9%E7%9B%AE%E7%AE%A1%E7%90%86/%E4%BF%AE%E6%94%B9%E8%BD%AF%E4%BB%B6%E7%9A%84%E8%89%BA%E6%9C%AF/" class="md-nav__link">
+        修改软件的艺术
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_23" type="checkbox" id="__nav_23" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_23">
+          运维
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="运维" data-md-level="1">
+        <label class="md-nav__title" for="__nav_23">
+          <span class="md-nav__icon md-icon"></span>
+          运维
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BF%90%E7%BB%B4/linux%E9%9B%86%E7%BE%A4%E5%92%8C%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" class="md-nav__link">
+        linux集群和自动化运维
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E8%BF%90%E7%BB%B4/python%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/" class="md-nav__link">
+        python自动化运维
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_24" type="checkbox" id="__nav_24" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_24">
+          互联网
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="互联网" data-md-level="1">
+        <label class="md-nav__title" for="__nav_24">
+          <span class="md-nav__icon md-icon"></span>
+          互联网
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%BA%92%E8%81%94%E7%BD%91/%E6%88%91%E7%9A%84%E4%BA%92%E8%81%94%E7%BD%91%E6%96%B9%E6%B3%95%E8%AE%BA-%E5%91%A8%E9%B8%BF%E7%A5%8E/" class="md-nav__link">
+        我的互联网方法论-周鸿祎
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E4%BA%92%E8%81%94%E7%BD%91/%E7%94%A8%E6%88%B7%E6%80%9D%E7%BB%B4/" class="md-nav__link">
+        用户思维
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_25" type="checkbox" id="__nav_25" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_25">
+          区块链
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="区块链" data-md-level="1">
+        <label class="md-nav__title" for="__nav_25">
+          <span class="md-nav__icon md-icon"></span>
+          区块链
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%8C%BA%E5%9D%97%E9%93%BE/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%8A%80%E6%9C%AF%E6%8C%87%E5%8D%97%28blockchain_guide%29/" class="md-nav__link">
+        区块链技术指南
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_26" type="checkbox" id="__nav_26" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_26">
+          技术演讲
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="技术演讲" data-md-level="1">
+        <label class="md-nav__title" for="__nav_26">
+          <span class="md-nav__icon md-icon"></span>
+          技术演讲
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../lecture/Gopher/%E5%93%94%E5%93%A9%E5%93%94%E5%93%A9%E7%9A%84go%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%AE%9E%E6%88%98/note/" class="md-nav__link">
+        哔哩哔哩的go微服务实战
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../lecture/Gopher/Go_Error/go%E4%B8%9A%E5%8A%A1%E5%9F%BA%E7%A1%80%E5%BA%93%E4%B9%8BError%26Context/" class="md-nav__link">
+        go业务基础库之Error&Context
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../lecture/Gopher/Go%E5%90%8C%E6%AD%A5%E5%92%8C%E5%B9%B6%E5%8F%91%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/note/" class="md-nav__link">
+        Go同步和并发设计模式
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../lecture/%E6%8A%80%E6%9C%AF%E6%BC%94%E8%AE%B2/%E5%B7%A6%E8%80%B3%E6%9C%B5%E8%80%97%E5%AD%90-%E6%88%91%E8%BF%99%E6%8A%80%E6%9C%AF%E4%BA%8C%E5%8D%81%E5%B9%B4/" class="md-nav__link">
+        左耳朵耗子-我这技术二十年
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_27" type="checkbox" id="__nav_27" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_27">
+          金融理财
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="金融理财" data-md-level="1">
+        <label class="md-nav__title" for="__nav_27">
+          <span class="md-nav__icon md-icon"></span>
+          金融理财
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%87%91%E8%9E%8D%E7%90%86%E8%B4%A2/%E5%AE%9A%E6%8A%95%E5%8D%81%E5%B9%B4/" class="md-nav__link">
+        定投十年
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E9%87%91%E8%9E%8D%E7%90%86%E8%B4%A2/%E7%A9%B7%E6%9F%A5%E7%90%86%E5%AE%9D%E5%85%B8/" class="md-nav__link">
+        穷查理宝典
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_28" type="checkbox" id="__nav_28" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_28">
+          写作
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="写作" data-md-level="1">
+        <label class="md-nav__title" for="__nav_28">
+          <span class="md-nav__icon md-icon"></span>
+          写作
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E5%86%99%E4%BD%9C/%E5%88%B7%E5%B1%8F%E6%96%87%E6%A1%88%E5%86%99%E4%BD%9C%E6%8A%80%E5%B7%A7/" class="md-nav__link">
+        刷屏文案写作技巧
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_29" type="checkbox" id="__nav_29" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_29">
+          思维
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="思维" data-md-level="1">
+        <label class="md-nav__title" for="__nav_29">
+          <span class="md-nav__icon md-icon"></span>
+          思维
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E4%B8%93%E6%B3%A8%E5%8A%9B_%E5%8C%96%E7%B9%81%E4%B8%BA%E7%AE%80%E7%9A%84%E6%83%8A%E4%BA%BA%E5%8A%9B%E9%87%8F/" class="md-nav__link">
+        专注力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E4%B8%BA%E4%BB%80%E4%B9%88%E7%B2%BE%E8%8B%B1%E8%BF%99%E6%A0%B7%E7%94%A8%E8%84%91%E4%B8%8D%E4%BC%9A%E7%B4%AF/" class="md-nav__link">
+        为什么精英这样用脑不会累
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%88%BB%E6%84%8F%E7%BB%83%E4%B9%A0/" class="md-nav__link">
+        刻意练习
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%A6%82%E4%BD%95%E6%83%B3%E5%88%B0%E5%8F%88%E5%81%9A%E5%88%B0/" class="md-nav__link">
+        如何想到又做到
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%AD%A6%E4%B9%A0%E4%B9%8B%E9%81%93/" class="md-nav__link">
+        学习之道
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%AD%A6%E4%B9%A0%E5%8A%9B/" class="md-nav__link">
+        学习力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E6%89%B9%E5%88%A4%E6%80%A7%E6%80%9D%E7%BB%B4%E5%B7%A5%E5%85%B7/" class="md-nav__link">
+        批判性思维工具
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E6%80%9D%E7%BB%B4%E4%BF%AE%E7%82%BC%28%E5%BC%80%E5%8F%91%E8%AE%A4%E7%9F%A5%E6%BD%9C%E8%83%BD%E7%9A%84%E4%B9%9D%E5%A0%82%E8%AF%BE%29/" class="md-nav__link">
+        程序员的思维修炼
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E8%AE%A4%E7%9F%A5%E5%A4%A9%E6%80%A7/" class="md-nav__link">
+        认知天性
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E8%B6%85%E6%95%88%E7%8E%87%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        超效率手册
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E5%A6%82%E4%BD%95%E9%AB%98%E6%95%88%E8%AE%B0%E5%BF%86/" class="md-nav__link">
+        如何高效记忆
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E7%A7%91%E5%AD%A6%E5%AD%A6%E4%B9%A0/" class="md-nav__link">
+        科学学习
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E6%80%9D%E7%BB%B4%E8%AE%A4%E7%9F%A5/%E9%AB%98%E6%95%88%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%8445%E4%B8%AA%E4%B9%A0%E6%83%AF/" class="md-nav__link">
+        高效程序员的45个习惯
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_30" type="checkbox" id="__nav_30" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_30">
+          职场
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="职场" data-md-level="1">
+        <label class="md-nav__title" for="__nav_30">
+          <span class="md-nav__icon md-icon"></span>
+          职场
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/give_and_take/" class="md-nav__link">
+        give and take
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/the_effective_engineer/" class="md-nav__link">
+        the_effective_engineer
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E5%85%89%E9%80%9F%E6%88%90%E9%95%BF/" class="md-nav__link">
+        光速成长
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E5%90%91%E4%B8%8A%E7%AE%A1%E7%90%86/" class="md-nav__link">
+        向上管理
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E6%88%90%E5%8A%9F%E5%8A%A8%E6%9C%BA%E4%B8%8E%E7%9B%AE%E6%A0%87/" class="md-nav__link">
+        成功动机与目标
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E7%95%AA%E8%8C%84%E5%B7%A5%E4%BD%9C%E6%B3%95/" class="md-nav__link">
+        番茄工作法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%81%86%E5%90%AC%E6%B2%9F%E9%80%9A%E5%AD%A6/" class="md-nav__link">
+        聆听沟通学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E7%9F%A5%E4%B9%8E%E8%81%8C%E4%BA%BA%E8%A7%89%E9%86%92/" class="md-nav__link">
+        知乎职人觉醒
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E7%9F%A5%E8%AF%86%E5%8F%98%E7%8E%B0/" class="md-nav__link">
+        知识变现
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%81%86%E5%90%AC%E6%B2%9F%E9%80%9A%E5%AD%A6/" class="md-nav__link">
+        聆听沟通学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%81%8C%E5%9C%BA%E5%8A%A8%E7%89%A9%E8%BF%9B%E5%8C%96%E6%89%8B%E5%86%8C/" class="md-nav__link">
+        职场动物进化手册
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%81%8C%E5%9C%BA%E8%A7%A3%E9%87%8A%E7%B3%BB/" class="md-nav__link">
+        职场解释系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%AF%B7%E5%81%9C%E6%AD%A2%E6%97%A0%E6%95%88%E5%8A%AA%E5%8A%9B/" class="md-nav__link">
+        请停止无效努力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E8%BD%AF%E6%8A%80%E8%83%BD/" class="md-nav__link">
+        软技能
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E9%AB%98%E6%95%8815%E6%B3%95%E5%88%99/" class="md-nav__link">
+        高效15法则
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E9%AB%98%E6%95%88%E6%B8%85%E5%8D%95%E5%B7%A5%E4%BD%9C%E6%B3%95/" class="md-nav__link">
+        高效清单工作法
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../career/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%9A%84%E8%87%AA%E6%88%91%E4%BF%AE%E5%85%BB/" class="md-nav__link">
+        程序员的自我修养
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_31" type="checkbox" id="__nav_31" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_31">
+          心理学
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="心理学" data-md-level="1">
+        <label class="md-nav__title" for="__nav_31">
+          <span class="md-nav__icon md-icon"></span>
+          心理学
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E4%B8%80%E5%88%87%E9%83%BD%E6%98%AF%E7%AB%A5%E5%B9%B4%E7%9A%84%E9%94%99%E5%90%97/" class="md-nav__link">
+        一切都是童年的错吗
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E4%BA%B2%E5%AF%86%E5%85%B3%E7%B3%BB/" class="md-nav__link">
+        亲密关系
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E6%83%85%E5%95%86/" class="md-nav__link">
+        情商
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E9%80%86%E5%95%86/" class="md-nav__link">
+        逆商
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E6%8B%96%E5%BB%B6%E5%BF%83%E7%90%86%E5%AD%A6/" class="md-nav__link">
+        拖延心理学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E7%A7%AF%E6%9E%81%E5%BF%83%E7%90%86%E5%AD%A6/" class="md-nav__link">
+        积极心理学
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B/" class="md-nav__link">
+        自控力
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B-%E5%AE%9E%E6%93%8D%E7%AF%87/" class="md-nav__link">
+        自控力-实操篇
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E8%87%AA%E6%8E%A7%E5%8A%9B-%E5%92%8C%E5%8E%8B%E5%8A%9B%E5%81%9A%E6%9C%8B%E5%8F%8B/" class="md-nav__link">
+        自控力:和压力做朋友
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E6%B4%BB%E5%87%BA%E6%9C%80%E4%B9%90%E8%A7%82%E7%9A%84%E8%87%AA%E5%B7%B1/" class="md-nav__link">
+        活出最乐观的自己
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E6%94%B9%E5%8F%98%E5%BF%83%E7%90%86%E5%AD%A6%E7%9A%8440%E9%A1%B9%E7%A0%94%E7%A9%B6/" class="md-nav__link">
+        改变心理学的40项研究
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E8%B6%85%E8%B6%8A%E8%87%AA%E5%8D%91/" class="md-nav__link">
+        超越自卑
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../psychology/%E5%8F%8D%E8%84%86%E5%BC%B1/" class="md-nav__link">
+        反脆弱
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_32" type="checkbox" id="__nav_32" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_32">
+          创业
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="创业" data-md-level="1">
+        <label class="md-nav__title" for="__nav_32">
+          <span class="md-nav__icon md-icon"></span>
+          创业
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../startup/hello_startup/" class="md-nav__link">
+        Hello Startup
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../startup/%E6%96%AF%E5%9D%A6%E7%A6%8F%E5%85%AC%E5%BC%80%E8%AF%BE-%E5%A6%82%E4%BD%95%E5%88%9B%E4%B8%9A/" class="md-nav__link">
+        斯坦福公开课如何创业
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../startup/%E8%BF%90%E8%90%A5%E5%85%B6%E5%AE%9E%E5%BE%88%E7%AE%80%E5%8D%95/" class="md-nav__link">
+        运营其实很简单
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#deadlocks-livelocks-and-starvation" class="md-nav__link">
+    Deadlocks, Livelocks, and Starvation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#determining-concurrency-safety" class="md-nav__link">
+    Determining Concurrency Safety
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#simplicity-in-the-face-of-complexity" class="md-nav__link">
+    Simplicity in the Face of Complexity
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/zwiley/mybook/edit/master/docs/golang/concurrency-in-go/concurrency_in_go.md" title="编辑此页" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+<p>《Concurrency In Go》</p>
+<h1 id="1-an-introduction-to-concurrency">1 An Introduction to Concurrency<a class="headerlink" href="#1-an-introduction-to-concurrency" title="Permanent link">&para;</a></h1>
+<p>critical section（临界区）：for a section of your program needs exclusive access to a shared resource.</p>
+<h3 id="deadlocks-livelocks-and-starvation">Deadlocks, Livelocks, and Starvation<a class="headerlink" href="#deadlocks-livelocks-and-starvation" title="Permanent link">&para;</a></h3>
+<p>Deadlocks conditions:</p>
+<ul>
+<li>Mutual Exclusion</li>
+<li>Wait For Condition</li>
+<li>No Preemption</li>
+<li>Circular Wait</li>
+</ul>
+<p>Livelocks: 活锁。想象两个人迎面走来，一个人向一边转，然后另一个人也同方向转，如此循环一直僵持谁都过不去。</p>
+<p>Starvation: 饥饿 ，一个并发的进程无法获取所有需要工作的资源。一个贪心的进程阻止其他进程获取执行资源。</p>
+<h3 id="determining-concurrency-safety">Determining Concurrency Safety<a class="headerlink" href="#determining-concurrency-safety" title="Permanent link">&para;</a></h3>
+<ul>
+<li>who is responsible for the Concurrency?</li>
+<li>how is the problem space mapped onto concurrency primitives?</li>
+<li>who is responsible for the synchronization?</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nx">CalculatePi</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span><span class="nx">end</span><span class="w"> </span><span class="kt">int64</span><span class="p">,</span><span class="w"> </span><span class="nx">pi</span><span class="w"> </span><span class="o">*</span><span class="nx">Pi</span><span class="p">)</span><span class="w"></span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">CalculatePi</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span><span class="nx">end</span><span class="w"> </span><span class="kt">int64</span><span class="p">)</span><span class="w"> </span><span class="p">[]</span><span class="kt">int64</span><span class="w"></span>
+<span class="kd">func</span><span class="w"> </span><span class="nx">CalculatePi</span><span class="p">(</span><span class="nx">begin</span><span class="p">,</span><span class="nx">end</span><span class="w"> </span><span class="kt">int64</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="kd">chan</span><span class="w"> </span><span class="kt">uint</span><span class="w"></span>
+</code></pre></div>
+<h3 id="simplicity-in-the-face-of-complexity">Simplicity in the Face of Complexity<a class="headerlink" href="#simplicity-in-the-face-of-complexity" title="Permanent link">&para;</a></h3>
+<h1 id="2-modeling-your-code-communicating-sequential-processes">2 Modeling Your Code: Communicating Sequential Processes<a class="headerlink" href="#2-modeling-your-code-communicating-sequential-processes" title="Permanent link">&para;</a></h1>
+<h3 id="concurrency-vs-parallelism">Concurrency vs Parallelism<a class="headerlink" href="#concurrency-vs-parallelism" title="Permanent link">&para;</a></h3>
+<p>Concurrency is a property of the code; parallelism is a property of the runnning programm.</p>
+<h3 id="what-is-csp">What Is CSP?<a class="headerlink" href="#what-is-csp" title="Permanent link">&para;</a></h3>
+<h3 id="gos-philosophy-on-concurrency">Go&rsquo;s Philosophy on Concurrency<a class="headerlink" href="#gos-philosophy-on-concurrency" title="Permanent link">&para;</a></h3>
+<p>CSP primitives or Memory access synchronizations.
+Use whichever is most expressive and/or most simple.</p>
+<p><img alt="" src="../decision_tree.png" /></p>
+<p>Aim for simplicity, use channels when possible, and treat goroutines like a free resource.</p>
+<h1 id="3-gos-concurrency-building-blocks">3 Go&rsquo;s Concurrency Building Blocks<a class="headerlink" href="#3-gos-concurrency-building-blocks" title="Permanent link">&para;</a></h1>
+<p>Coroutines are simply concurrent subroutines(functions, clousures or methods in Go) that are nonpreemptive.(非抢占式)</p>
+<p>Go follows a model of concurrency called the fork-join model.</p>
+<p><img alt="" src="../join_point.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nx">wg</span><span class="w"> </span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="w"></span>
+
+<span class="nx">sayHello</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">defer</span><span class="w"> </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Done</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;hello&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="nx">wg</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="k">go</span><span class="w"> </span><span class="nx">sayHello</span><span class="p">()</span><span class="w"></span>
+<span class="nx">wg</span><span class="p">.</span><span class="nx">Wait</span><span class="p">()</span><span class="w"> </span><span class="err">#</span><span class="w"> </span><span class="nx">this</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">join</span><span class="w"> </span><span class="nx">point</span><span class="err">，</span><span class="nx">等</span><span class="w"> </span><span class="nx">child</span><span class="w"> </span><span class="nx">执行完毕</span><span class="w"></span>
+</code></pre></div>
+<h3 id="the-sync-package">The sync Package<a class="headerlink" href="#the-sync-package" title="Permanent link">&para;</a></h3>
+<p>The sync package contains the concurrency primitives that are most useful for low-level memory access synchronization.</p>
+<h4 id="waitgroup">WaitGroup<a class="headerlink" href="#waitgroup" title="Permanent link">&para;</a></h4>
+<p>Wait for a set of concurrent operations to complete when you either don&rsquo;t care about the result of the concurrent
+operations , or you have other means of collecting their results.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;sync&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;time&quot;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">wg</span><span class="w"> </span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c1">// 注意 Add 必须在外边而不是在 go func() 函数体里边</span><span class="w"></span>
+<span class="w">    </span><span class="k">go</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">defer</span><span class="w"> </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Done</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;1st goroutine sleeping...&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="nx">time</span><span class="p">.</span><span class="nx">Sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}()</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">go</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">defer</span><span class="w"> </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Done</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;2nd goroutine sleeping...&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="nx">time</span><span class="p">.</span><span class="nx">Sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}()</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">wg</span><span class="p">.</span><span class="nx">Wait</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;All goroutines complete&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<h4 id="mutex-and-rwmutex">Mutex and RWMutex<a class="headerlink" href="#mutex-and-rwmutex" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><span class="c1">// Mutex demo</span><span class="w"></span>
+<span class="kn">package</span><span class="w"> </span><span class="nx">main</span><span class="w"></span>
+
+<span class="kn">import</span><span class="w"> </span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;fmt&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="s">&quot;sync&quot;</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nx">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">count</span><span class="w"> </span><span class="kt">int</span><span class="w"></span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">lock</span><span class="w"> </span><span class="nx">sync</span><span class="p">.</span><span class="nx">Mutex</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">incr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">lock</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">defer</span><span class="w"> </span><span class="nx">lock</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="nx">count</span><span class="o">++</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Incr: %d\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">decr</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">lock</span><span class="p">.</span><span class="nx">Lock</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="k">defer</span><span class="w"> </span><span class="nx">lock</span><span class="p">.</span><span class="nx">Unlock</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="nx">count</span><span class="o">--</span><span class="w"></span>
+<span class="w">        </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;Decr: %d\n&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="nx">arithmetic</span><span class="w"> </span><span class="nx">sync</span><span class="p">.</span><span class="nx">WaitGroup</span><span class="w"></span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">arithmetic</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">go</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">defer</span><span class="w"> </span><span class="nx">arithmetic</span><span class="p">.</span><span class="nx">Done</span><span class="p">()</span><span class="w"></span>
+<span class="w">            </span><span class="nx">incr</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">}()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nx">arithmetic</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">go</span><span class="w"> </span><span class="kd">func</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="k">defer</span><span class="w"> </span><span class="nx">arithmetic</span><span class="p">.</span><span class="nx">Done</span><span class="p">()</span><span class="w"></span>
+<span class="w">            </span><span class="nx">decr</span><span class="p">()</span><span class="w"></span>
+<span class="w">        </span><span class="p">}()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+
+<span class="w">    </span><span class="nx">arithmetic</span><span class="p">.</span><span class="nx">Wait</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="s">&quot;Done&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+<p>RWMutex: 适合读多写少场景。可以获取多个读锁，除非锁用来持有写入。</p>
+<h4 id="cond">Cond<a class="headerlink" href="#cond" title="Permanent link">&para;</a></h4>
+<p>A rendezvous point for goroutine waiting for or announcing the occurrence of an event.</p>
+<p><div class="highlight"><pre><span></span><code>for conditoinTrue() == false{
+    time.Sleep(1*time.Millisecond) //sleep多久是个问题，太久效率低下，太快消耗 cpu
+}
+</code></pre></div>
+use Cond, we cloud write like this:</p>
+<p><div class="highlight"><pre><span></span><code>c := sync.NewCond(&amp;sync.Mutex{})
+c.L.Lock()
+for conditoinTrue() == false {
+    c.Wait() // blocking call, will suspend
+}
+c.L.UnLock()
+</code></pre></div>
+考虑有一个固定长度为2的队列，10个 items 想要 push 进去。
+只要有空间我们就希望入队，被尽早通知。</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    c := sync.NewCond(&amp;sync.Mutex{})
+    queue := make([]interface{}, 0, 10)
+
+    removeFromQueue := func(delay time.Duration) {
+        time.Sleep(delay)
+        c.L.Lock() // enter the critical section
+        queue = queue[1:] //simulate dequeuing an item
+        fmt.Println(&quot;removed from queue&quot;)
+        c.L.Unlock() // exit critical section
+        c.Signal() // let a goroutine waiting on the condition know that something has occured
+    }
+
+    for i := 0; i &lt; 10; i++ {
+        c.L.Lock() //进入临界区, critical section
+        for len(queue) == 2 {
+            c.Wait() //will suspend the main goroutine until a signal on the condition has been sent
+        }
+        fmt.Println(&quot;Adding to queue&quot;)
+        queue = append(queue, struct{}{})
+        go removeFromQueue(1 * time.Second)
+        c.L.Unlock() //exit critical section
+    }
+}
+</code></pre></div>
+<h4 id="once">Once<a class="headerlink" href="#once" title="Permanent link">&para;</a></h4>
+<p>only one call to &ldquo;Do&rdquo;, even on different goroutines.</p>
+<p><div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+)
+
+func main() {
+    var count int
+
+    increment := func() {
+        count++
+    }
+
+    var once sync.Once
+    var wg sync.WaitGroup
+    wg.Add(100)
+    for i := 0; i &lt; 100; i++ {
+        go func() {
+            defer wg.Done()
+            once.Do(increment)
+        }()
+    }
+    wg.Wait()
+    fmt.Printf(&quot;count is %d\n&quot;, count) //1
+}
+</code></pre></div>
+NOTES: sync.Once only counts the number of times Do is Called, not
+how many times unique functions passed into Do are called.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;sync&quot;
+)
+
+func main() {
+    var count int
+    increment := func() { count++ }
+    decremet := func() { count-- }
+
+    var once sync.Once
+    once.Do(increment)
+    once.Do(decremet)
+    fmt.Printf(&quot;count is %d\n&quot;, count) //1
+}
+</code></pre></div>
+<h4 id="pool">Pool(并发安全对象池)<a class="headerlink" href="#pool" title="Permanent link">&para;</a></h4>
+<p>Pool is a concurrent-safe implementation of the object pool pattern.</p>
+<div class="highlight"><pre><span></span><code>myPool := &amp;sync.Pool{
+    New: func() interface{}{
+        fmt.Println(&quot;Creating new instance.&quot;)
+        return struct{}{}
+    },
+}
+
+myPool.Get()
+instance:=myPool.Get()
+myPool.Put(instance)
+myPool.Get()
+</code></pre></div>
+<p>Another common situation where a Pool is useful is for warming a cache of pre-allocated
+objects for operations that must run as quickly as possible.</p>
+<p>When working with sync.Pool:</p>
+<ul>
+<li>give it a New member variable that is thread-safe when called</li>
+<li>when receive an instance from Get,make no assumptions regarding the state of the object you receive back</li>
+<li>Make sure to call Put when you&rsquo;re finished with the object you pulled out of the pool.(with defer)</li>
+<li>Objects in the pool must be roughly uniform in makeup</li>
+</ul>
+<h3 id="channels">Channels<a class="headerlink" href="#channels" title="Permanent link">&para;</a></h3>
+<p>Go will implicitly convert bidirectional channels to unidirectional channels when needed.</p>
+<div class="highlight"><pre><span></span><code>var receiveChan &lt;- chan interface{}
+var sendChan chan &lt;- interface{}
+dataStream := make(chan interface{})
+//valid statements, 双向的可以赋值给单向的
+receiveChan = dataStream
+sendChan = dataStream
+</code></pre></div>
+<p>Unbufferd channel in Go are said to be blocking.</p>
+<div class="highlight"><pre><span></span><code>val, ok := &lt;-stringStream // ok 判断还有没有值，从一个已经 closed 的 channel 依然会获取默认值
+</code></pre></div>
+<p>The second return value is a way for a read operation to indicate whether the read off the channel
+was a value generated by a write elsewhere in the process, or a default value generated from a closed channel.</p>
+<p>We can use &ldquo;for range&rdquo; iter channel, it will automatically break the loop when cahnnel is closed.</p>
+<p>Buffred channels, even if no reads are performed on the channel, a goroutine can still perform n writes.
+You can treat buffered channels are an inmemory FIFO queue for concurrent processes to communicate over.</p>
+<p><img alt="" src="../channel1.png" />
+<img alt="" src="../channel2.png" /></p>
+<p>The first thing we should do to put channels in the right context is to assign channel ownership.</p>
+<ul>
+<li>Instaniate the channel.</li>
+<li>Perform writes, os pass ownership to another goroutine.</li>
+<li>Close the channel</li>
+<li>Ecapsulate the previous three things in this list and expose them via a reader channel.</li>
+</ul>
+<p>As a consumer of a channel, I only have to worry about two things.</p>
+<ul>
+<li>Knowing when a channel is closed (use val, ok)</li>
+<li>Responsibly handling blocking for any reason</li>
+</ul>
+<div class="highlight"><pre><span></span><code>// keep the scope of channel ownership small
+func main() {
+
+    chanOwner := func() &lt;-chan int {
+        resultStream := make(chan int, 5)
+        go func() {
+            defer close(resultStream)
+            for i := 0; i &lt;= 5; i++ {
+                resultStream &lt;- i
+            }
+        }()
+        return resultStream // will implicityly converted to read-only for consumers
+    }
+
+    resultStream := chanOwner()
+    for result := range resultStream {
+        fmt.Printf(&quot;received : %d\n&quot;, result)
+    }
+
+    fmt.Println(&quot;Done receiving!&quot;)
+}
+</code></pre></div>
+<h3 id="the-select-statement">The select Statement<a class="headerlink" href="#the-select-statement" title="Permanent link">&para;</a></h3>
+<p>The select statement is the glue that binds channels together,
+it can help safely bring channels together with concepts like cancellations, timeouts, waiting, and default values.</p>
+<div class="highlight"><pre><span></span><code>func main() {
+    // a bit like switch
+    var c1, c2 &lt;-chan interface{}   // receive only chan
+    var c3 chan&lt;- interface{}  // send only chan
+    // all channels reads and writes are considered simultaneously to see if any of them are ready
+    // populated or closed channels in the case of reads, and channels that are not at capacity in the case of writes
+    // if none of the channels are ready, the entire select statement blocks
+    select {
+    case &lt;-c1:
+        // do something
+    case &lt;-c2:
+        // do something
+    case c3 &lt;- struct{}{}:
+        // do something
+    }
+}
+</code></pre></div>
+<ul>
+<li>
+<p>What happens when multiple channels have something to read?</p>
+</li>
+<li>
+<p>random select, each has an equal  chance of being selected as all the others</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>func main() {
+    c1 := make(chan interface{})
+    close(c1)
+    c2 := make(chan interface{})
+    close(c2)
+    var c1Count, c2Count int
+    for i := 1000; i &gt;= 0; i-- {
+        select {
+        case &lt;-c1:
+            c1Count++
+        case &lt;-c2:
+            c2Count++
+        }
+    }
+    fmt.Printf(&quot;c1: %d\n, c2: %d\n&quot;, c1Count, c2Count)
+}
+</code></pre></div>
+<ul>
+<li>
+<p>What if there are never any channels that become ready?</p>
+</li>
+<li>
+<p>you may want to timeout</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>func main() {
+    var c &lt;-chan int
+    select {
+    case &lt;-c:
+    case &lt;-time.After(1 * time.Second):
+        fmt.Println(&quot;Time out&quot;)
+    }
+}
+</code></pre></div>
+<ul>
+<li>
+<p>what if we want to do something but no channels are currently ready?</p>
+</li>
+<li>
+<p>use default</p>
+</li>
+<li>this allows a goroutine to make progress on work while waiting for another goroutine to report a result</li>
+</ul>
+<div class="highlight"><pre><span></span><code>func main() {
+    start := time.Now()
+    var c1, c2 &lt;-chan int
+    select {
+    case &lt;-c1:
+    case &lt;-c2:
+    default:
+        fmt.Printf(&quot;In default after %v\n\n&quot;, time.Since(start))
+    }
+}
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>func main() {
+    done := make(chan interface{})
+    go func() {
+        time.Sleep(5 * time.Second)
+        close(done)
+    }()
+    workCounter := 0
+loop:
+    for {
+        select {
+        case &lt;-done:
+            break loop
+        default:
+        }
+        // simulate work
+        workCounter++
+        time.Sleep(1 * time.Second)
+    }
+    fmt.Printf(&quot;Achieved %v cycles of work before signalled to stop.\n&quot;, workCounter)
+}
+</code></pre></div>
+<h6 id="empty-select">empty select<a class="headerlink" href="#empty-select" title="Permanent link">&para;</a></h6>
+<p><code>seelct {}</code> will block forever.</p>
+<h3 id="the-gomaxprocs-lever">The GOMAXPROCS lever<a class="headerlink" href="#the-gomaxprocs-lever" title="Permanent link">&para;</a></h3>
+<p>this function controls the number of OS threads that will host so-called &ldquo;work queues&rdquo;</p>
+<h1 id="4-concurrency-patterns-in-go">4. Concurrency Patterns in Go<a class="headerlink" href="#4-concurrency-patterns-in-go" title="Permanent link">&para;</a></h1>
+<h3 id="confinement">Confinement(限制)<a class="headerlink" href="#confinement" title="Permanent link">&para;</a></h3>
+<p>When working with concurrent code</p>
+<ul>
+<li>Synchronization primitives for sharing memory (sync.Mutex)</li>
+<li>Synchronization via Communicating (channels)</li>
+<li>Immutable Data (copy of values)</li>
+<li>Data protected by confinement (ad hoc and lexical)</li>
+</ul>
+<div class="highlight"><pre><span></span><code>func main() {
+    // confines the write aspect of this channel to prevent other goroutines from writing to it
+    // 限制向 channel 写数据到一个 func 里
+    chanOnwer := func() &lt;-chan int {
+        results := make(chan int, 5)
+        go func() {
+            defer close(results)
+            for i := 0; i &lt;= 5; i++ {
+                results &lt;- i
+            }
+        }()
+        return results
+    }
+
+    consumer := func(results &lt;-chan int) {
+        for result := range results {
+            fmt.Printf(&quot;Received : %d\n&quot;, result)
+        }
+        fmt.Println(&quot;Done receiving!&quot;)
+    }
+
+    results := chanOnwer()
+    consumer(results)
+}
+</code></pre></div>
+<h3 id="the-for-select-loop">The for-select Loop<a class="headerlink" href="#the-for-select-loop" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Sending iteration variables out on a channel</li>
+</ul>
+<div class="highlight"><pre><span></span><code>    for _, s := range []string{&quot;a&quot;, &quot;b&quot;, &quot;c&quot;} {
+        select {
+        case &lt;-done:
+            return
+        case stringStream &lt;- s:
+        }
+    }
+</code></pre></div>
+<ul>
+<li>Looping infinitely waiting to be stopped</li>
+</ul>
+<div class="highlight"><pre><span></span><code>    for {
+        select {
+        case &lt;-done:
+            return
+        default:
+        }
+        // do non-preemptable work
+    }
+</code></pre></div>
+<div class="codehilite"><pre><span></span><code><span class="n">for</span> <span class="p">{</span>
+    <span class="n">select</span> <span class="p">{</span>
+    <span class="n">case</span> <span class="o">&lt;-</span><span class="n">done</span><span class="o">:</span>
+        <span class="n">return</span>
+    <span class="n">default</span><span class="o">:</span>
+    <span class="p">}</span>
+    <span class="o">//</span> <span class="n">do</span> <span class="n">non</span><span class="o">-</span><span class="n">preemptable</span> <span class="n">work</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="preventing-goroutine-leaksgoroutine">Preventing Goroutine Leaks(goroutine 泄露)<a class="headerlink" href="#preventing-goroutine-leaksgoroutine" title="Permanent link">&para;</a></h3>
+<p><strong>Goroutine are not garbage collected by the runtime.</strong>
+The goroutine has a few paths to terminiation:</p>
+<ul>
+<li>when it has completed its work</li>
+<li>when it cannnot continue its work due to an unrecoverable error</li>
+<li>when it&rsquo;s told to stop working</li>
+</ul>
+<p>A simple example of a goroutine leak:</p>
+<p><div class="highlight"><pre><span></span><code>func main() {
+    doWork := func(strings &lt;-chan string) &lt;-chan interface{} {
+        completed := make(chan interface{})
+        go func() {
+            defer fmt.Println(&quot;doWork exited.&quot;)
+            defer close(completed)
+            for s := range strings {
+                // do something interesting
+                fmt.Println(s)
+            }
+        }()
+        return completed
+    }
+    //pass nil, the strings channel will never actually gets any strings written onto it
+    //and the goroutine doWork will remain in memory for the lifetime of this process
+    doWork(nil)
+    // perhaps more work is done here
+    fmt.Println(&quot;Done.&quot;)
+}
+</code></pre></div>
+Use signal done. The parent goroutine passed this channel to child goroutine,
+and then closes the channel when it wants to cancel the child goroutine.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;time&quot;
+)
+
+func main() {
+
+    doWork := func(
+        done &lt;-chan interface{},
+        strings &lt;-chan string,
+    ) &lt;-chan interface{} {
+        terminated := make(chan interface{})
+        go func() {
+            defer fmt.Println(&quot;doWork exited&quot;)
+            defer close(terminated)
+            for {
+                select {
+                case s := &lt;-strings:
+                    //do somthing
+                    fmt.Println(s)
+                case &lt;-done:
+                    return
+                }
+            }
+        }()
+
+        done := make(chan interface{})
+        terminated := doWork(done, nil)
+
+        go func() {
+            // cancel operation after 1 second
+            time.Sleep(1 * time.Second)
+            fmt.Println(&quot;canceling doWork goroutine...&quot;)
+            close(done)
+        }()
+
+        &lt;-terminated // joined the goroutine
+        fmt.Println(&quot;Done&quot;)
+    }
+}
+</code></pre></div>
+<p>What if a goroutine blocked on attempting wo write a value to a channel?</p>
+<div class="highlight"><pre><span></span><code>func main() {
+    newRandStream := func() &lt;-chan int {
+        randStream := make(chan int)
+        go func() {
+            defer fmt.Println(&quot;newRandStream closure exited.&quot;) //never run
+            defer close(randStream)
+            for {
+                randStream &lt;- rand.Int()
+            }
+        }()
+        return randStream
+    }
+
+    randStream := newRandStream()
+    fmt.Println(&quot;3 random ints:&quot;)
+    for i := 1; i &lt;= 3; i++ {
+        fmt.Printf(&quot;%d:%d\n&quot;, i, &lt;-randStream)
+    }
+    // 依然退出，输出1到3
+}
+</code></pre></div>
+<p>We can also use a done channel:</p>
+<div class="highlight"><pre><span></span><code>func main() {
+    newRandStream := func(done &lt;-chan interface{}) &lt;-chan int {
+        randStream := make(chan int)
+        go func() {
+            defer fmt.Println(&quot;newRandStream closure exited.&quot;) //never run
+            defer close(randStream)
+            for {
+                select {
+                case randStream &lt;- rand.Int():
+                case &lt;-done:
+                    return
+                }
+            }
+        }()
+        return randStream
+    }
+
+    done :=make(chan interface{})
+    randStream := newRandStream()
+    fmt.Println(&quot;3 random ints:&quot;)
+    for i := 1; i &lt;= 3; i++ {
+        fmt.Printf(&quot;%d:%d\n&quot;, i, &lt;-randStream)
+    }
+    close(done)
+}
+</code></pre></div>
+<p>NOTE: If a goroutine is responsible for creating a goroutine, it is also responsible for ensuring
+it can stop the gorutine.</p>
+<h3 id="the-or-channel-pattern">The or-channel pattern<a class="headerlink" href="#the-or-channel-pattern" title="Permanent link">&para;</a></h3>
+<p>At times you may find yourself wanting to combine one or more done channels into a single done channel
+that closes if any of its component channels close.
+This pattern creates a composite done channel through recursion and goroutines.</p>
+<div class="highlight"><pre><span></span><code>func main() {
+    var or func(channels ...&lt;-chan interface{}) &lt;-chan interface{}
+    or = func(channels ...&lt;-chan interface{}) &lt;-chan interface{} {
+        switch len(channels) {
+        case 0:
+            return nil
+        case 1:
+            return channels[0]
+        }
+
+        orDone := make(chan interface{})
+        go func() {
+            defer close(orDone)
+            switch len(channels) {
+            case 2:
+                select {
+                case &lt;-channels[0]:
+                case &lt;-channels[1]:
+                }
+            default:
+                select {
+                case &lt;-channels[0]:
+                case &lt;-channels[1]:
+                case &lt;-channels[2]:
+                case &lt;-or(append(channels[3:], orDone)...):
+                }
+            }
+        }()
+        return orDone
+    }
+}
+
+func test() {
+    sig := func(after time.Duration) &lt;-chan interface{} {
+        c := make(chan interface{})
+        go func() {
+            defer close(c)
+            time.Sleep(after)
+        }()
+        return c
+    }
+    start := time.Now()
+    &lt;-or(
+        sig(2*time.Hour),
+        sig(5*time.Minute),
+        sig(1*time.Second),
+    )
+    fmt.Printf(&quot;done after %v\n&quot;, time.Since(start))
+}
+</code></pre></div>
+<h3 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;net/http&quot;
+)
+
+// Result is http result
+type Result struct {
+    Error    error
+    Response *http.Response
+}
+
+func main() {
+    checkStatus := func(done &lt;-chan interface{}, urls ...string) &lt;-chan Result {
+        results := make(chan Result)
+        go func() {
+            defer close(results)
+            for _, url := range urls {
+                var result Result
+                resp, err := http.Get(url)
+                result = Result{Error: err, Response: resp}
+                select {
+                case &lt;-done:
+                    return
+                case results &lt;- result:
+                }
+            }
+        }()
+        return results
+    }
+
+    done := make(chan interface{})
+    defer close(done)
+    urls := []string{&quot;https://www.baidu.com&quot;, &quot;https://badhost&quot;}
+    for result := range checkStatus(done, urls...) {
+        if result.Error != nil {
+            fmt.Printf(&quot;error:%v&quot;, result.Error)
+            continue
+        }
+        fmt.Printf(&quot;Response: %\n&quot;, result.Response.Status)
+    }
+}
+</code></pre></div>
+<p>Errors should be considered first-class citizens when constructing values to return from goroutines.
+If your goroutine can produce errors, those errors should be tightly coupled with your result type,
+and passed along through the same lines of communication.</p>
+<h3 id="pipelines">Pipelines<a class="headerlink" href="#pipelines" title="Permanent link">&para;</a></h3>
+<p>It is a very powerful tool to use when your program needs to process streams, or batched of data.</p>
+<p>Stage: taskes data in , performs a transformation on it, and sends the data back out</p>
+<div class="highlight"><pre><span></span><code>    multiply := func(values []int, multiplier int) []int {
+        multipliedValues := make([]int, len(values))
+        for i, v := range values {
+            multipliedValues[i] = v * multiplier
+        }
+        return multipliedValues
+    }
+</code></pre></div>
+<h4 id="best-practice-for-constructing-pipelines">Best practice for constructing Pipelines<a class="headerlink" href="#best-practice-for-constructing-pipelines" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+    generator := func(done &lt;-chan interface{}, integers ...int) &lt;-chan int {
+        intStream := make(chan int)
+        go func() {
+            defer close(intStream)
+            for _, i := range integers {
+                select {
+                case &lt;-done:
+                    return
+                case intStream &lt;- i:
+                }
+            }
+        }()
+        return intStream
+    }
+
+    multiply := func(done &lt;-chan interface{}, intStream &lt;-chan int, multiplier int) &lt;-chan int {
+        multipliedStream := make(chan int)
+        go func() {
+            defer close(multipliedStream)
+            for i := range intStream {
+                select {
+                case &lt;-done:
+                    return
+                case multipliedStream &lt;- i * multiplier:
+                }
+            }
+        }()
+        return multipliedStream
+    }
+
+    add := func(done &lt;-chan interface{}, intStream &lt;-chan int, additive int) &lt;-chan int {
+        addedStream := make(chan int)
+        go func() {
+            defer close(addedStream)
+            for i := range intStream {
+                select {
+                case &lt;-done:
+                    return
+                case addedStream &lt;- i + additive:
+                }
+            }
+        }()
+        return addedStream
+    }
+
+    done := make(chan interface{})
+    defer close(done)
+
+    intStream := generator(done, 1, 2, 3, 4)
+    pipeline := multiply(done, add(done, multiply(done, intStream, 2), 1), 2)
+    for v := range pipeline {
+        fmt.Println(v)
+    }
+
+}
+</code></pre></div>
+<h4 id="some-handy-generators">Some Handy Generators<a class="headerlink" href="#some-handy-generators" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+
+    repeat := func(done &lt;-chan interface{}, values ...interface{}) &lt;-chan interface{} {
+        valueStream := make(chan interface{})
+        go func() {
+            defer close(valueStream)
+            for {
+                for _, v := range values {
+                    select {
+                    case &lt;-done:
+                        return
+                    case valueStream &lt;- v:
+                    }
+                }
+            }
+        }()
+        return valueStream
+    }
+
+    take := func(done &lt;-chan interface{}, valueStream &lt;-chan interface{}, num int) &lt;-chan interface{} {
+        takeStream := make(chan interface{})
+        go func() {
+            defer close(takeStream)
+            for i := 0; i &lt; num; i++ {
+                select {
+                case &lt;-done:
+                    return
+                case takeStream &lt;- &lt;-valueStream:
+                }
+            }
+
+        }()
+        return takeStream
+    }
+
+    done := make(chan interface{})
+    defer close(done)
+
+    for num := range take(done, repeat(done, 1), 10) {
+        fmt.Printf(&quot;%v &quot;, num)
+    }
+    // 1 1 1 1 1 1 1 1 1 1
+
+}
+</code></pre></div>
+<h3 id="fan-out-fan-in">Fan-Out, Fan-In (扇出，扇入)<a class="headerlink" href="#fan-out-fan-in" title="Permanent link">&para;</a></h3>
+<p>Fan-out is a term to describe the process of starting multiple gortouine to handle input from the pipeline,
+and Fan-in is a term to describe the process of combining results into one channel.</p>
+<p>Fanout one of your stages if both of the following apply:</p>
+<ul>
+<li>It doesn&rsquo;t rely on values that the stage had calulated before.</li>
+<li>It takes a long time to run</li>
+</ul>
+<h3 id="the-or-done-channel">The or-done-channel<a class="headerlink" href="#the-or-done-channel" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>    orDone := func(done, c &lt;-chan interface{}) &lt;-chan interface{} {
+        valStream := make(chan interface{})
+        go func() {
+            defer close(valStream)
+            for {
+                select {
+                case &lt;-done:
+                    return
+                case v, ok := &lt;-c:
+                    if ok == false {
+                        return
+                    }
+                    select {
+                    case valStream &lt;- v:
+                    case &lt;-done:
+                    }
+                }
+            }
+        }()
+        return valStream
+    }
+
+    for val := range orDone(done, myChan) {
+        // Do something with val
+    }
+</code></pre></div>
+<h3 id="the-tee-channel">The tee-channel<a class="headerlink" href="#the-tee-channel" title="Permanent link">&para;</a></h3>
+<p>Sometimes you may want to split values coming in from a channel so that you can send them off
+into two separate areas of your codebase.</p>
+<p>You can pass it a channel to read from , and it will return two seperate channels that will get the same value:</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+    tee := func(done &lt;-chan interface{}, in &lt;-chan interface{}) (&lt;-chan interface{}, &lt;-chan interface{}) {
+        out1 := make(chan interface{})
+        out2 := make(chan interface{})
+        go func() {
+            defer close(out1)
+            defer close(out2)
+            for val := range orDone(done, in) {
+                var out1, out2 = out1, out2 //shadow the variables
+                for i := 0; i &lt; 2; i++ {
+                    select {
+                    case &lt;-done:
+                    case out1 &lt;- val:
+                        // set its shadowed copy to nil,so further writes will block and the other channel may continue
+                        out1 = nil
+                    case out2 &lt;- val:
+                        out2 = nil
+                    }
+                }
+            }
+        }()
+        return out1, out2
+    }
+
+    done := make(chan interface{})
+    defer close(done)
+    out1, out2 := tee(done, take(done, repeat(done, 1, 2), 4))
+
+    for val1 := range out1 {
+        fmt.Printf(&quot;out1: %v, out2:%v\n&quot;, val1, &lt;-out2)
+    }
+}
+</code></pre></div>
+<h3 id="the-bridge-channel">The bridge-channel<a class="headerlink" href="#the-bridge-channel" title="Permanent link">&para;</a></h3>
+<p>define a function that can destructure the channel of channels into s simple channel(bridging the channels)</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import &quot;fmt&quot;
+
+func main() {
+    bridge := func(done &lt;-chan interface{}, chanStream &lt;-chan &lt;-chan interface{}) &lt;-chan interface{} {
+        valStream := make(chan interface{})
+        go func() {
+            defer close(valStream)
+            for {
+                var stream &lt;-chan interface{} //this is the channel that will return all values from bridge
+                select {
+                case maybeStream, ok := &lt;-chanStream:
+                    if ok == false {
+                        return
+                    }
+                    stream = maybeStream
+                case &lt;-done:
+                    return
+                }
+                for val := range orDone(done, stream) {
+                    select {
+                    case valStream &lt;- val:
+                    case &lt;-done:
+                    }
+                }
+
+            }
+        }()
+        return valStream
+    }
+
+    genVals := func() &lt;-chan &lt;-chan interface{} {
+        chanStream := make(chan (&lt;-chan interface{}))
+        go func() {
+            defer close(chanStream)
+            for i := 0; i &lt; 10; i++ {
+                stream := make(chan interface{}, 1)
+                stream &lt;- i
+                close(stream)
+                chanStream &lt;- stream
+            }
+        }()
+        return chanStream
+    }
+
+    for v := range bridge(nil, genVals()) {
+        fmt.Printf(&quot;%v &quot;, v) //0 1 2 3 4 5 6 7 8 9
+    }
+}
+</code></pre></div>
+<h3 id="queuing">Queuing<a class="headerlink" href="#queuing" title="Permanent link">&para;</a></h3>
+<p>queuing should be implemented either:</p>
+<ul>
+<li>At the entrance to your pipeline</li>
+<li>In stages where batching will lead to higher efficiency</li>
+</ul>
+<h3 id="the-context-package">The context Package<a class="headerlink" href="#the-context-package" title="Permanent link">&para;</a></h3>
+<p>context package serves two primary purposes:</p>
+<ul>
+<li>to provide an API for canceling branches of you call-graph</li>
+<li>to provide a data-bag for transporting request-scoped data through your call-graph</li>
+</ul>
+<h1 id="5-concurrency-at-scale">5. Concurrency at Scale<a class="headerlink" href="#5-concurrency-at-scale" title="Permanent link">&para;</a></h1>
+<h3 id="error-progagation">Error Progagation<a class="headerlink" href="#error-progagation" title="Permanent link">&para;</a></h3>
+<p>critical information:</p>
+<ul>
+<li>What happend</li>
+<li>When and where it occured(stack track, UTC time, machine)</li>
+<li>A friendly usre-facing message</li>
+<li>How the user can get more information(track id)</li>
+</ul>
+<h3 id="timeouts-and-cancellation">Timeouts and Cancellation<a class="headerlink" href="#timeouts-and-cancellation" title="Permanent link">&para;</a></h3>
+<p>what the reasons we might want our concurrent processes to support timeouts?</p>
+<ul>
+<li>System saturation(饱和)</li>
+<li>Stale data</li>
+<li>Attempting to prevent deadlocks</li>
+</ul>
+<p>There are a number of reasons why a concurrent process might be canceld:</p>
+<ul>
+<li>Timeouts, a timeout is an implicit cancellation</li>
+<li>User intervention(干预)</li>
+<li>Parent cancellation</li>
+<li>Replicated requests</li>
+</ul>
+<h3 id="heartbeats">Heartbeats<a class="headerlink" href="#heartbeats" title="Permanent link">&para;</a></h3>
+<p>Heartbeats are a way for concurrent processes to signal life to outside parties. Two diferent types:</p>
+<ul>
+<li>Heartbeats that occur on a time interval.</li>
+<li>Heartbeats that occur at the beginning of a unit of work.</li>
+</ul>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    doWork := func(done &lt;-chan interface{}, pulseInterval time.Duration) (chan interface{}, &lt;-chan time.Time) {
+        heartbeat := make(chan interface{})
+        results := make(chan time.Time)
+        go func() {
+            defer close(heartbeat)
+            defer close(results)
+
+            pulse := time.Tick(pulseInterval)
+            workGen := time.Tick(2 * pulseInterval) //another ticker to simulate work coming in
+
+            sendPulse := func() {
+                select {
+                case heartbeat &lt;- struct{}{}:
+                default: // no one maybe listening to our hearteat
+                }
+            }
+            sendResult := func(r time.Time) {
+                for {
+                    select {
+                    case &lt;-done:
+                        return
+                    case &lt;-pulse:
+                        sendPulse()
+                    case results &lt;- r:
+                        return
+                    }
+                }
+            }
+
+            for {
+                select {
+                case &lt;-done:
+                    return
+                case &lt;-pulse:
+                    sendPulse()
+                case r := &lt;-workGen:
+                    sendResult(r)
+                }
+            }
+        }()
+        return heartbeat, results
+    }
+
+    done := make(chan interface{})
+    time.AfterFunc(10*time.Second, func() { close(done) })
+
+    const timeout = 2 * time.Second
+    heartbeat, results := doWork(done, timeout/2)
+    for {
+        select {
+        case _, ok := &lt;-heartbeat:
+            if ok == false {
+                return
+            }
+            fmt.Println(&quot;pulse&quot;)
+        case r, ok := &lt;-results:
+            if ok == false {
+                return
+            }
+            fmt.Printf(&quot;results %v\n&quot;, r.Second())
+        case &lt;-time.After(timeout):
+            return
+        }
+    }
+
+}
+</code></pre></div>
+<p>For any long-running goroutines, or goroutines that need to be tested, highly recommend this pattern.</p>
+<h3 id="replicated-request">Replicated Request<a class="headerlink" href="#replicated-request" title="Permanent link">&para;</a></h3>
+<p>You can replicate the request to mulitple handlers(whether those be gorutines, processes, or servers),
+and one of them will run faster than other ones, you can then immediately return the result.
+The downside is that you&rsquo;ll have to utilize resources to keep multiple copies of the handlers running.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+    &quot;math/rand&quot;
+    &quot;sync&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    doWork := func(done &lt;-chan interface{}, id int, wg *sync.WaitGroup, result chan&lt;- int) {
+        started := time.Now()
+        defer wg.Done()
+
+        //Simulate random load
+        simulateLoadTime := time.Duration(1+rand.Intn(5)) * time.Second
+        select {
+        case &lt;-done:
+        case &lt;-time.After(simulateLoadTime):
+        }
+        select {
+        case &lt;-done:
+        case result &lt;- id:
+        }
+
+        took := time.Since(started)
+        if took &lt; simulateLoadTime {
+            took = simulateLoadTime
+        }
+        fmt.Printf(&quot;%v took %v\n&quot;, id, took)
+    }
+
+    done := make(chan interface{})
+    result := make(chan int)
+    var wg sync.WaitGroup
+    wg.Add(10)
+
+    for i := 0; i &lt; 10; i++ {
+        go doWork(done, i, &amp;wg, result) //start 10 handlers to handle our request
+    }
+    firstReturned := &lt;-result // grabs the first return value from the group of handlers
+    close(done)               //cancel all the remaining handlers
+    wg.Wait()
+    fmt.Printf(&quot;Received an answer from #%v\n&quot;, firstReturned)
+}
+</code></pre></div>
+<h3 id="rate-limiting">Rate Limiting<a class="headerlink" href="#rate-limiting" title="Permanent link">&para;</a></h3>
+<p>Most rate limitings is done by utilizing an algorithm called the &ldquo;token bucket&rdquo;.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;context&quot;
+    &quot;log&quot;
+    &quot;os&quot;
+    &quot;sync&quot;
+
+    &quot;golang.org/x/time/rate&quot; // go get github.com/golang/time/rate
+)
+
+func Open() *APIConnection {
+    return &amp;APIConnection{
+        rateLimiter: rate.NewLimiter(rate.Limit(1), 1), //1 event per second
+    }
+}
+
+type APIConnection struct {
+    rateLimiter *rate.Limiter // https://godoc.org/golang.org/x/time/rate
+}
+
+func (a *APIConnection) ReadFile(ctx context.Context) error {
+    if err := a.rateLimiter.Wait(ctx); err != nil {
+        return err
+    }
+    return nil
+}
+func (a *APIConnection) ResoveAddress(ctx context.Context) error {
+    if err := a.rateLimiter.Wait(ctx); err != nil {
+        return err
+    }
+    return nil
+}
+
+func main() {
+    defer log.Printf(&quot;Done&quot;)
+    log.SetOutput(os.Stdout)
+    log.SetFlags(log.Ltime | log.LUTC)
+    apiConnection := Open()
+    var wg sync.WaitGroup
+    wg.Add(20)
+
+    for i := 0; i &lt; 10; i++ {
+        go func() {
+            defer wg.Done()
+            err := apiConnection.ReadFile(context.Background())
+            if err != nil {
+                log.Printf(&quot;cannot ReadFile :%v&quot;, err)
+            }
+            log.Printf(&quot;ReadFile&quot;)
+        }()
+    }
+
+    for i := 0; i &lt; 10; i++ {
+        go func() {
+            defer wg.Done()
+            err := apiConnection.ResoveAddress(context.Background())
+            if err != nil {
+                log.Printf(&quot;cannot ResolveAddress :%v&quot;, err)
+            }
+            log.Printf(&quot;ResolveAddress&quot;)
+        }()
+    }
+    wg.Wait()
+
+}
+</code></pre></div>
+<p>It&rsquo;s eaiser to keep the limiters separate and then combine them into one rate limiter that manages the interaction for
+you.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;context&quot;
+    &quot;sort&quot;
+    &quot;time&quot;
+
+    &quot;golang.org/x/time/rate&quot; // go get github.com/golang/time/rate
+)
+
+type RateLimiter interface {
+    Wait(context.Context) error
+    Limit() rate.Limit
+}
+
+func MultiLimiter(limiters ...RateLimiter) *multiLimiter {
+    byLimit := func(i, j int) bool {
+        return limiters[i].Limit() &lt; limiters[j].Limit()
+    }
+    sort.Slice(limiters, byLimit)
+    return &amp;multiLimiter{limiters: limiters}
+}
+
+type multiLimiter struct {
+    limiters []RateLimiter
+}
+
+func (l *multiLimiter) Wait(ctx context.Context) error {
+    for _, l := range l.limiters {
+        if err := l.Wait(ctx); err != nil {
+            return err
+        }
+    }
+    return nil
+}
+
+func (l *multiLimiter) Limit() rate.Limit {
+    // return the most restrictive limit
+    return l.limiters[0].Limit()
+}
+
+func Open() *APIConnnection {
+    secondLimit := rate.NewLimiter(Per(2, time.Second), 1)
+    minuteLimit := rate.NewLimiter(Per(10, time.Minute), 10)
+    return &amp;APIConnnection{
+        rateLimiter: MultiLimiter(secondLimit, minuteLimit),
+    }
+}
+
+type APIConnnection struct {
+    rateLimiter RateLimiter
+}
+
+func (a *APIConnnection) ReadFile(ctx context.Context) error {
+    if err := a.rateLimiter.Wait(ctx); err != nil {
+        return err
+    }
+    return nil
+}
+
+func (a *APIConnnection) ResolveAddress(ctx context.Context) errro {
+    if err := a.rateLimiter.Wait(ctx); err != nil {
+        return err
+    }
+    return nil
+}
+</code></pre></div>
+<h3 id="healing-unhealthy-goroutines">Healing Unhealthy Goroutines<a class="headerlink" href="#healing-unhealthy-goroutines" title="Permanent link">&para;</a></h3>
+<p>Ensure your long-lived goroutines stay up and healthy.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;log&quot;
+    &quot;time&quot;
+)
+
+type startGoroutineFn func(done &lt;-chan interface{}, pulseInterval time.Duration) (heartbeat &lt;-chan interface{})
+
+func main() {
+
+    newSteward := func(timeout time.Duration, startGoroutine startGoroutineFn) startGoroutineFn {
+        return func(done &lt;-chan interface{}, pulseInterval time.Duration) &lt;-chan interface{} {
+            heartbeat := make(chan interface{})
+            go func() {
+                defer close(heartbeat)
+
+                var wardDone chan interface{}
+                var wardHeartbeat &lt;-chan interface{}
+                startWard := func() {
+                    wardDone = make(chan interface{})
+                    wardHeartbeat = startGoroutine(or(wardDone, done), timeout/2)
+                }
+                startWard()
+                pulse := time.Tick(pulseInterval)
+
+            monitorLoop:
+                for {
+                    timeoutSignal := time.After(timeout)
+                    for {
+                        select {
+                        case &lt;-pulse:
+                            select {
+                            case heartbeat &lt;- struct{}{}:
+                            default:
+                            }
+                        case &lt;-wardHeartbeat:
+                            continue monitorLoop
+                        case &lt;-timeoutSignal:
+                            log.Println(&quot;steward: ward unhealthy: restarting&quot;)
+                            close(wardDone)
+                            startWard()
+                            continue monitorLoop
+                        case &lt;-done:
+                            return
+                        }
+                    }
+
+                }
+            }()
+            return heartbeat
+        }
+    }
+}
+</code></pre></div>
+<h1 id="6-goroutines-and-the-go-runtime">6 Goroutines and the Go Runtime<a class="headerlink" href="#6-goroutines-and-the-go-runtime" title="Permanent link">&para;</a></h1>
+<h3 id="work-stealing">Work Stealing<a class="headerlink" href="#work-stealing" title="Permanent link">&para;</a></h3>
+<p>work stealing strategy. Go follows a fork-join model for concurrency.
+Forks are when goroutines are started, and join points are when two or more goroutines are
+synchronized through channels or types in the sync package.</p>
+<p>The work stealing algorithm follows a few basic rules, Given a thread of execution:</p>
+<ol>
+<li>At A fork point, add tasks to the tail of the deque associated with the thread</li>
+<li>If the thread is idle, steal work from the head of deque associated with some other random thread</li>
+<li>At a join point that cannot be realized yet(i.e.,the goroutine it is synchronized with has not completed yet), pop
+     work off the tail of the thread&rsquo;s own deque.</li>
+<li>if the thread&rsquo;s deque is empty, either:
+  - stall at a join
+  - steal work from the head of a random thread&rsquo;s associated deque</li>
+</ol>
+<h3 id="stealing-tasks-or-continuations">Stealing Tasks or Continuations?<a class="headerlink" href="#stealing-tasks-or-continuations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>func main() {
+    var fib func(n int) &lt;-chan int
+    fib = func(n int) &lt;-chan int {
+        result := make(chan int)
+        go func() { // tasks
+            defer close(result)
+            if n &lt;= 2 {
+                result &lt;- 1
+                return
+            }
+            result &lt;- &lt;-fib(n-1) + &lt;-fib(n-2)
+        }()
+        return result // continuation
+    }
+    fmt.Printf(&quot;fib = %d&quot;, &lt;-fib(4))
+}
+</code></pre></div>
+<ul>
+<li>In go , goroutines are tasks</li>
+<li>Everything after a goroutine is called is the continuation</li>
+</ul>
+<p>Continuation stealing is how Go&rsquo;s work-stealing algorithm is implemented</p>
+<p>Go&rsquo;s scheduler has three main concepts:</p>
+<ul>
+<li>G: A Goroutine</li>
+<li>M: An OS thread(also referenced as a machine in the source code)</li>
+<li>P: A context(also referecned as a processor in the source code), GOMAXPROCS</li>
+</ul>
+<h1 id="appendix">Appendix<a class="headerlink" href="#appendix" title="Permanent link">&para;</a></h1>
+<h3 id="anatomy-of-a-goroutine-error">Anatomy of a Goroutine Error<a class="headerlink" href="#anatomy-of-a-goroutine-error" title="Permanent link">&para;</a></h3>
+<p>Prior to Go1.6, when a goroutine panicked, the runtime would print stack traces of all the currently executing
+goroutines.</p>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;fmt&quot;
+)
+
+func main() {
+    //go run -race main.go
+    var data int
+    go func() {
+        data++
+    }()
+    if data == 0 {
+        fmt.Printf(&quot;value is %v\n&quot;, data)
+    }
+}
+</code></pre></div>
+<h3 id="race-detection">Race Detection<a class="headerlink" href="#race-detection" title="Permanent link">&para;</a></h3>
+<p>go run -race main.go</p>
+<h3 id="pprof">pprof<a class="headerlink" href="#pprof" title="Permanent link">&para;</a></h3>
+<p><code>runtime/pporf</code> package has predefined profiles to hook into and display:</p>
+<ul>
+<li>goroutine</li>
+<li>heap</li>
+<li>threadcreate</li>
+<li>block</li>
+<li>primitives</li>
+<li>mutex</li>
+</ul>
+<div class="highlight"><pre><span></span><code>package main
+
+import (
+    &quot;log&quot;
+    &quot;os&quot;
+    &quot;runtime/pprof&quot;
+    &quot;time&quot;
+)
+
+func main() {
+    log.SetFlags(log.Ltime | log.LUTC)
+    log.SetOutput(os.Stdout)
+
+    //every second , log how many goroutines are currently running
+    go func() {
+        goroutines := pprof.Lookup(&quot;goroutine&quot;)
+        for range time.Tick(1 * time.Second) {
+            log.Printf(&quot;goroutine count:%d\n&quot;, goroutines.Count())
+        }
+    }()
+
+    //create some goroutines which will never exit
+    var blockForever chan struct{}
+    for i := 0; i &lt; 10; i++ {
+        go func() { &lt;-blockForever }()
+        time.Sleep(500 * time.Millisecond)
+    }
+}
+</code></pre></div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="页脚">
+      
+        
+        <a href="../../building_restful_web_services_with_go/book/" class="md-footer__link md-footer__link--prev" aria-label="上一页: Building Restful Web Services with Go" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              Building Restful Web Services with Go
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../../go_in_action%28go%E8%AF%AD%E8%A8%80%E5%AE%9E%E6%88%98%29/" class="md-footer__link md-footer__link--next" aria-label="下一页: Go In Action(Go 实战)" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              Go In Action(Go 实战)
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["instant"], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\s\\-\uff0c\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version.title": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
+      
+        <script src="../../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
