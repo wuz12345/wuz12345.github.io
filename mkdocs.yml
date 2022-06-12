@@ -1,7 +1,7 @@
-site_name: ZWiley的随记
-site_description: ZWiley的随记
-site_author: ZWiley
-site_url: https://zwiley.github.io/mybook/
+site_name: Wuzhuang
+site_description: Wuzhuang的随记
+site_author: Wuzhuang
+site_url: https://wuz12345.github.io
 
 theme:
     name: material
@@ -20,7 +20,7 @@ theme:
     language: 'zh'
 
 repo_name: 'GitHub'
-repo_url: https://github.com/zwiley/mybook/
+repo_url: https://github.com/wuz12345/wuz12345.github.io
 
 extra_javascript:   
     - 'js/extra.js'
