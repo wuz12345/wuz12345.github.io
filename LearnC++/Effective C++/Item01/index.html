@@ -486,6 +486,40 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#case3paramtype" class="md-nav__link">
+    case3:ParamType不是指针或引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    其他情况下的类型推断
+  </a>
+  
+    <nav class="md-nav" aria-label="其他情况下的类型推断">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#array" class="md-nav__link">
+    Array参数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function" class="md-nav__link">
+    Function参数
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3206,6 +3240,40 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#case3paramtype" class="md-nav__link">
+    case3:ParamType不是指针或引用
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    其他情况下的类型推断
+  </a>
+  
+    <nav class="md-nav" aria-label="其他情况下的类型推断">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#array" class="md-nav__link">
+    Array参数
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#function" class="md-nav__link">
+    Function参数
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -3292,8 +3360,86 @@ const int *px = &amp;x;
 <h2 id="case2universal-reference">case2:参数类型是<code>Universal Reference</code><a class="headerlink" href="#case2universal-reference" title="Permanent link">&para;</a></h2>
 <p>当参数类型被声明为<code>T&amp;&amp;</code>时，其推断规则如下：</p>
 <ol>
-<li>如果<code>expr</code></li>
+<li>如果<code>expr</code>是左值，则参数类型和模板类型推断为左值引用；</li>
+<li>如果<code>expr</code>是右值，参照case1。</li>
 </ol>
+<blockquote>
+<p>左值和右值稍后介绍，左值可以简单理解为可以取地址的值，与此相对不能取地址的值是右值。</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T&amp;&amp; param)
+int x = 2;
+
+const int cx =x;
+const int &amp;rx = x;
+</code></pre></div>
+<ol>
+<li><code>f(x)</code>，<code>x</code>是左值，<code>T is int&amp; ParamType is int&amp;</code>(规则一)；</li>
+<li><code>f(cx)</code>，<code>T is const int&amp; ParamType is const int&amp;</code>(规则一);</li>
+<li><code>f(rx)</code>，<code>T is const int&amp; ParamType is const int&amp;</code>(规则一);</li>
+<li><code>f(27)</code>，27是右值，<code>T is  int ParamType is  int</code>(规则二);</li>
+</ol>
+<h2 id="case3paramtype">case3:<code>ParamType</code>不是指针或引用<a class="headerlink" href="#case3paramtype" title="Permanent link">&para;</a></h2>
+<p>按值传递的类型推断非常简单，其规则如下：</p>
+<ol>
+<li><code>expr</code>是引用则忽略引用；</li>
+<li><code>expr</code>是引用则忽略引用，忽略引用后如果被<code>const</code>修饰忽略<code>const</code>，同样忽略<code>volatile</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T param)
+int x = 2;
+
+const int cx =x;
+const int &amp;rx = x;
+</code></pre></div>
+<ol>
+<li><code>f(x)</code>，<code>T is int ParamType is int</code>(规则一)；</li>
+<li><code>f(cx)</code>，<code>T is  int ParamType is int</code>(规则一);</li>
+<li><code>f(rx)</code>，<code>T is  int ParamType is int</code>(规则一);</li>
+</ol>
+<blockquote>
+<p>如果，按值传递指针时，<code>const</code>不能忽略</p>
+</blockquote>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T param)
+
+const char* const ptr = &quot;sssssss&quot;;
+</code></pre></div>
+<ol>
+<li><code>f(ptr)</code>，<code>T is  const char* ParamType is const char*</code></li>
+</ol>
+<h2 id="_3">其他情况下的类型推断<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="array"><code>Array</code>参数<a class="headerlink" href="#array" title="Permanent link">&para;</a></h3>
+<p><code>Array</code>类型在传参时实际传递的是首个元素的地址</p>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T param)
+
+const char  name[] = &quot;01234567&quot;;
+</code></pre></div>
+<ol>
+<li><code>f(name)</code> ，尽管name是array，但是T为<code>const char*</code></li>
+</ol>
+<p>但是，在下面这种情况：</p>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T&amp; param)
+
+const char  name[] = &quot;01234567&quot;;
+</code></pre></div>
+<ol>
+<li><code>f(name)</code> ，T为<code>const char[8]</code>,参数类型为<code>const char (&amp;)[8]</code></li>
+</ol>
+<h3 id="function"><code>Function</code>参数<a class="headerlink" href="#function" title="Permanent link">&para;</a></h3>
+<p>与Array相同，传递函数时使用的也是地址，会将函数指针作为参数。</p>
+<div class="highlight"><pre><span></span><code>void func(int ,double)
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T param)
+</code></pre></div>
+<p>调用<code>f(func)</code>，参数类型会被判断为<code>void (*)(int,double)</code></p>
+<div class="highlight"><pre><span></span><code>template &lt;typename T&gt;
+void f(T&amp; param)
+</code></pre></div>
+<p>调用<code>f(func)</code>，参数类型会被判断为<code>void (&amp;)(int,double)</code></p>
 
               
             </article>
