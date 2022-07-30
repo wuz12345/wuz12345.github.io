@@ -416,8 +416,36 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LearnC%2B%2B/Effective%20C%2B%2B/Item02/" class="md-nav__link">
+        item2
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../LearnC%2B%2B/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/" class="md-nav__link">
+        左值与右值
+      </a>
     </li>
   
 
@@ -523,6 +551,20 @@
   
 </nav>
       
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="md-nav__link">
+        线性表
+      </a>
     </li>
   
 
@@ -3211,11 +3253,6 @@ P     I
 Output: &quot;A&quot;
 </code></pre></div></p>
 <p>题目描述很清楚，就是将字符串按之型排列，再按横行读取，如下图：</p>
-<figure>
-<p><img alt="Image title" src="../6.png" width="300" />
-  </p>
-<figcaption>手工图</figcaption>
-</figure>
 <h2 id="_2">题解<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
 <p>首先，已知条件是什么:</p>
 <ol>
@@ -3223,17 +3260,7 @@ Output: &quot;A&quot;
 <li>排几行.</li>
 </ol>
 <p>说白了不用管字符串是什么，可以看做是把<span class="arithmatex"><span class="MathJax_Preview">\{0,1,2,...,n-1\}</span><script type="math/tex">\{0,1,2,...,n-1\}</script></span>个数按照之字形排列，然后在按行取。好，现在换成数字再看：</p>
-<figure>
-<p><img alt="Image title" src="../6_1.png" width="300" />
-  </p>
-<figcaption>手工图</figcaption>
-</figure>
 <p>是不是看出规律了？没错，只需要知道第一行的数字，后续的数字按照其前一行的元素加一减一就得到了。那么，第一行的元素从哪来？再看一张图：</p>
-<figure>
-<p><img alt="Image title" src="../6_2.png" width="300" />
-  </p>
-<figcaption>手工图</figcaption>
-</figure>
 <p>答案呼之欲出！没错，对于<span class="arithmatex"><span class="MathJax_Preview">n=k</span><script type="math/tex">n=k</script></span>的情况第一行的数字就是:<span class="arithmatex"><span class="MathJax_Preview">\{i_{0 or 1},i+(2k-2),i+2(2k-2),...\}</span><script type="math/tex">\{i_{0 or 1},i+(2k-2),i+2(2k-2),...\}</script></span>，以此类推就行。
 知道解法之后再看看，怎么把解写成代码？先看一下我们需要哪些数据：</p>
 <ol>
@@ -3242,8 +3269,22 @@ Output: &quot;A&quot;
 <li>以此类推，直至第n行结束，输出答案。</li>
 </ol>
 <h2 id="code">code<a class="headerlink" href="#code" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>vector&lt;int&gt; convert(int number,int row){
+<div class="highlight"><pre><span></span><code>string convert(string s, int numRows) {
+    if (numRows == 1) return s;
 
+    vector&lt;string&gt; rows(min(numRows, int(s.size())));
+    int curRow = 0;
+    bool goingDown = false;
+
+    for (char c : s) {
+        rows[curRow] += c;
+        if (curRow == 0 || curRow == numRows - 1) goingDown = !goingDown;
+        curRow += goingDown ? 1 : -1;
+    }
+
+    string ret;
+    for (string row : rows) ret += row;
+    return ret;
 }
 </code></pre></div>
 
@@ -3259,7 +3300,7 @@ Output: &quot;A&quot;
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../../LearnC%2B%2B/Effective%20C%2B%2B/Item01/" class="md-footer__link md-footer__link--prev" aria-label="Previous: item1" rel="prev">
+        <a href="../../LearnC%2B%2B/%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 左值与右值" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -3268,20 +3309,20 @@ Output: &quot;A&quot;
               <span class="md-footer__direction">
                 Previous
               </span>
-              item1
+              左值与右值
             </div>
           </div>
         </a>
       
       
         
-        <a href="../../%E7%9F%A5%E8%AF%86/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8E%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-footer__link md-footer__link--next" aria-label="Next: 正则表达式与有限状态机" rel="next">
+        <a href="../%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="md-footer__link md-footer__link--next" aria-label="Next: 线性表" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              正则表达式与有限状态机
+              线性表
             </div>
           </div>
           <div class="md-footer__button md-icon">
