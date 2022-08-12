@@ -1,0 +1,1595 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="wuzhuang">
+      
+      
+        <meta name="author" content="wuzhuang">
+      
+      
+        <link rel="canonical" href="https://wuz12345.github.io/LearnC%2B%2B/%E6%A8%A1%E7%89%88%E5%92%8C%E6%B3%9B%E5%9E%8B%E7%BC%96%E7%A8%8B/%E7%B1%BB%E6%A8%A1%E6%9D%BF/">
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.2.16">
+    
+    
+      
+        <title>类模板 - wuzhuang</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1c3799f8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cc9b2e1e.min.css">
+        
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="wuzhuang" class="md-header__button md-logo" aria-label="wuzhuang" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            wuzhuang
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              类模板
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/wuz12345/mynote/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="wuzhuang" class="md-nav__button md-logo" aria-label="wuzhuang" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    wuzhuang
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/wuz12345/mynote/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        简介
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        关于
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          LearnGo
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="LearnGo" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          LearnGo
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LearnGo/Read/" class="md-nav__link">
+        简介
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          LearnC++
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="LearnC++" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          LearnC++
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_1" type="checkbox" id="__nav_4_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_1">
+          模板和泛型编程
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="模板和泛型编程" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_1">
+          <span class="md-nav__icon md-icon"></span>
+          模板和泛型编程
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../READ/" class="md-nav__link">
+        简介
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          类模板
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        类模板
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    类模板
+  </a>
+  
+    <nav class="md-nav" aria-label="类模板">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    使用模板实现Stack
+  </a>
+  
+    <nav class="md-nav" aria-label="使用模板实现Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    类模板的声明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    成员函数的实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack_1" class="md-nav__link">
+    使用Stack类
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partial-usage-of-class-templates" class="md-nav__link">
+    Partial Usage of Class Templates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#friends" class="md-nav__link">
+    Friends
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specializations-of-class-templates" class="md-nav__link">
+    类模板的特化(Specializations of Class Templates)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partial-specialization" class="md-nav__link">
+    部分特化(偏特化,Partial Specialization)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-class-template-arguments" class="md-nav__link">
+    默认类模版参数(Default Class Template Arguments)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    Type Aliases(类型别名)
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Aliases(类型别名)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typedefs-alias-declarations" class="md-nav__link">
+    typedefs Alias Declarations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-templates" class="md-nav__link">
+    Alias Templates(模板别名)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-templates-for-member-types" class="md-nav__link">
+    成员类型的模板别名(Alias Templates for Member Types)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_ttype-traits-suffix-_t" class="md-nav__link">
+    类型特征后缀 _t(Type Traits Suffix _t)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-template-argument-deduction" class="md-nav__link">
+    类模板参数推断(Class Template Argument Deduction)
+  </a>
+  
+    <nav class="md-nav" aria-label="类模板参数推断(Class Template Argument Deduction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#class-template-arguments-deduction-with-string-literals" class="md-nav__link">
+    字符串常量的类模板参数推断(Class Template Arguments Deduction with String Literals)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deduction-guides" class="md-nav__link">
+    推断规则(Deduction Guides）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#templatized-aggregates" class="md-nav__link">
+    模板化聚合(Templatized Aggregates)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E6%97%A0%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0/" class="md-nav__link">
+        非类型模板参数
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%E6%A8%A1%E6%9D%BF/" class="md-nav__link">
+        可变类型模板
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E6%8B%B7%E8%B4%9D%E8%B5%8B%E5%80%BC/" class="md-nav__link">
+        拷贝赋值
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_3" type="checkbox" id="__nav_4_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4_3">
+          Effiective Modern C++
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Effiective Modern C++" data-md-level="2">
+        <label class="md-nav__title" for="__nav_4_3">
+          <span class="md-nav__icon md-icon"></span>
+          Effiective Modern C++
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Effective%20C%2B%2B/Item01/" class="md-nav__link">
+        item1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Effective%20C%2B%2B/Item02/" class="md-nav__link">
+        item2
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Effective%20C%2B%2B/Item07/" class="md-nav__link">
+        item7
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../%E5%B7%A6%E5%80%BC%E4%B8%8E%E5%8F%B3%E5%80%BC/" class="md-nav__link">
+        左值与右值
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
+          LeetCode刷题
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="LeetCode刷题" data-md-level="1">
+        <label class="md-nav__title" for="__nav_5">
+          <span class="md-nav__icon md-icon"></span>
+          LeetCode刷题
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LeetCode%20%E5%88%B7%E9%A2%98/Zigzag-Conversion/" class="md-nav__link">
+        之字形转换
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../LeetCode%20%E5%88%B7%E9%A2%98/%E7%BA%BF%E6%80%A7%E8%A1%A8/" class="md-nav__link">
+        线性表
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_6" type="checkbox" id="__nav_6" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_6">
+          有趣的知识
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="有趣的知识" data-md-level="1">
+        <label class="md-nav__title" for="__nav_6">
+          <span class="md-nav__icon md-icon"></span>
+          有趣的知识
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%9F%A5%E8%AF%86/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8E%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="md-nav__link">
+        正则表达式与有限状态机
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../%E7%9F%A5%E8%AF%86/max_and_min/" class="md-nav__link">
+        max()函数怎么写
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_7">
+          webRTC
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="webRTC" data-md-level="1">
+        <label class="md-nav__title" for="__nav_7">
+          <span class="md-nav__icon md-icon"></span>
+          webRTC
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../webrtc/FEC/FEC/" class="md-nav__link">
+        FEC
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    类模板
+  </a>
+  
+    <nav class="md-nav" aria-label="类模板">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stack" class="md-nav__link">
+    使用模板实现Stack
+  </a>
+  
+    <nav class="md-nav" aria-label="使用模板实现Stack">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    类模板的声明
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    成员函数的实现
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack_1" class="md-nav__link">
+    使用Stack类
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partial-usage-of-class-templates" class="md-nav__link">
+    Partial Usage of Class Templates
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#friends" class="md-nav__link">
+    Friends
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#specializations-of-class-templates" class="md-nav__link">
+    类模板的特化(Specializations of Class Templates)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#partial-specialization" class="md-nav__link">
+    部分特化(偏特化,Partial Specialization)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#default-class-template-arguments" class="md-nav__link">
+    默认类模版参数(Default Class Template Arguments)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#type-aliases" class="md-nav__link">
+    Type Aliases(类型别名)
+  </a>
+  
+    <nav class="md-nav" aria-label="Type Aliases(类型别名)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#typedefs-alias-declarations" class="md-nav__link">
+    typedefs Alias Declarations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-templates" class="md-nav__link">
+    Alias Templates(模板别名)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alias-templates-for-member-types" class="md-nav__link">
+    成员类型的模板别名(Alias Templates for Member Types)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_ttype-traits-suffix-_t" class="md-nav__link">
+    类型特征后缀 _t(Type Traits Suffix _t)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#class-template-argument-deduction" class="md-nav__link">
+    类模板参数推断(Class Template Argument Deduction)
+  </a>
+  
+    <nav class="md-nav" aria-label="类模板参数推断(Class Template Argument Deduction)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#class-template-arguments-deduction-with-string-literals" class="md-nav__link">
+    字符串常量的类模板参数推断(Class Template Arguments Deduction with String Literals)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deduction-guides" class="md-nav__link">
+    推断规则(Deduction Guides）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#templatized-aggregates" class="md-nav__link">
+    模板化聚合(Templatized Aggregates)
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+  <a href="https://github.com/wuz12345/mynote/edit/master/docs/LearnC++/模版和泛型编程/类模板.md" title="Edit this page" class="md-content__button md-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+
+  <h1>类模板</h1>
+
+<h2 id="_1">类模板<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="stack">使用模板实现<code>Stack</code><a class="headerlink" href="#stack" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>#include &lt;vector&gt;
+#include &lt;cassert&gt;
+
+template&lt;typename T&gt;
+class Stack {
+  private:
+    std::vector&lt;T&gt; elems;      // elements
+
+  public:
+    void push(T const&amp; elem);  // push element
+    void pop();                // pop element
+    T const&amp; top() const;      // return top element
+    bool empty() const {       // return whether the stack is empty
+        return elems.empty();
+    }
+};
+
+template&lt;typename T&gt;
+void Stack&lt;T&gt;::push (T const&amp; elem)
+{
+    elems.push_back(elem);     // append copy of passed elem
+}
+
+template&lt;typename T&gt;
+void Stack&lt;T&gt;::pop ()
+{
+    assert(!elems.empty());
+    elems.pop_back();          // remove last element
+}
+
+template&lt;typename T&gt;
+T const&amp; Stack&lt;T&gt;::top () const
+{
+    assert(!elems.empty());
+    return elems.back();       // return copy of last element
+}
+</code></pre></div>
+<h4 id="_2">类模板的声明<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p>和函数模板类似:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;  // template&lt;class T&gt;
+   class Stack {
+    //...
+};  
+</code></pre></div>
+<p>和其他类型声明类似，<code>T</code>可以被用来声明成员和成员函数，在<code>Stack</code>这个例子中，<code>T</code>被用来声明元素类型，函数参数类型以及返回类型：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+  private:
+    std::vector&lt;T&gt; elems;      // elements
+
+  public:
+    void push(T const&amp; elem);  // push element
+    void pop();                // pop element
+    T const&amp; top() const;      // return top element
+    bool empty() const {       // return whether the stack is empty
+        return elems.empty();
+    }
+};
+</code></pre></div>
+<p>和普通类不同，模板类的类型要包含模板参数<code>&lt;T&gt;</code>，例如<code>Stack</code>类的类型为<code>Stack&lt;T&gt;</code>，在类内使用时<code>&lt;T&gt;</code>可以省略，下面两段代码等价：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+    //...
+Stack (Stack const&amp;);
+Stack&amp; operator= (Stack const&amp;); 
+};
+
+template&lt;typename T&gt;
+class Stack {
+    //...
+Stack (Stack&lt;T&gt; const&amp;);
+Stack&lt;T&gt;&amp; operator= (Stack&lt;T&gt; const&amp;); 
+};
+</code></pre></div>
+<h4 id="_3">成员函数的实现<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p>与非模板类的成员函数不同，模板类的成员函数在在类外实现时要使用完整类型<code>&lt;T&gt;</code>:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+void Stack&lt;T&gt;::push (T const&amp; elem)
+{
+    elems.push_back(elem); // append copy of passed elem }
+}
+</code></pre></div>
+<p><code>pop()</code>函数实现如下:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+T Stack&lt;T&gt;::pop ()
+{
+    assert(!elems.empty()); 
+    T elem = elems.back(); // 保存
+    elems.pop_back(); //删除
+    return elem; //返回  return copy of saved element
+}
+</code></pre></div>
+<blockquote>
+<p>因为<code>back()</code>和<code>pop_back()</code>对于空容器存在未定义行为，所以断言。</p>
+</blockquote>
+<p><code>top()</code>如下：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+T const&amp; Stack&lt;T&gt;::top ()const
+{
+    assert(!elems.empty());
+    return elems.back(); // return copy of last element
+}
+</code></pre></div>
+<p>也可以在类内实现成员函数:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+    void push (T const&amp; elem) {
+        elems.push_back(elem); // append copy of passed elem
+    }
+};
+</code></pre></div>
+<h3 id="stack_1">使用Stack类<a class="headerlink" href="#stack_1" title="Permanent link">&para;</a></h3>
+<p>与函数模板可以进行类型推断不同，使用类模板必须制定类型以实现模板实例化。 </p>
+<p><div class="highlight"><pre><span></span><code>Stack&lt;int&gt;         intStack; // stack of ints 
+Stack&lt;std::string&gt; stringStack; // stack of strings
+// manipulate int stack 
+intStack.push(7);
+std::cout &lt;&lt; intStack.top() &lt;&lt; ’\n’;
+// manipulate string stack
+stringStack.push(&quot;hello&quot;);
+std::cout &lt;&lt; stringStack.top() &lt;&lt; ’\n’;
+stringStack.pop();
+</code></pre></div>
+只用调用成员函数时函数才会实例化，静态成员函数是当模板类使用时会实例化且只实例化一次。</p>
+<h3 id="partial-usage-of-class-templates">Partial Usage of Class Templates<a class="headerlink" href="#partial-usage-of-class-templates" title="Permanent link">&para;</a></h3>
+<p>在模板类的定义中，往往需要实现多重操作例如<code>++,--,&lt;&lt;</code>等，此时就需要模板类型参数支持以上操作，在<code>Stack&lt;T&gt;</code>中增加打印函数，例如:</p>
+<p><div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+   class Stack {
+    void printOn() (std::ostream&amp; strm) const {
+        for (T const&amp; elem : elems) {
+            strm &lt;&lt; elem &lt;&lt; ’ ’; // call &lt;&lt; for each element
+        }
+    } 
+};
+</code></pre></div>
+此时：</p>
+<p><div class="highlight"><pre><span></span><code>Stack&lt;std::pair&lt;int,int&gt;&gt; ps;
+ps.printOn(std::cout);  //Error std::pair&lt;int,int&gt;不支持`&lt;&lt;`操作
+</code></pre></div>
+但是对于其他函数则不报错，只有元素类型支持的操作在模板实例化后才不会报错(函数只有在调用的时候才会实例化)，因此以下使用是没有问题的。</p>
+<div class="highlight"><pre><span></span><code>Stack&lt;std::pair&lt;int,int&gt;&gt; ps;
+ps.push({4, 5});
+ps.push({6, 7});
+std::cout &lt;&lt; ps.top().first &lt;&lt; ’\n’; // OK
+std::cout &lt;&lt; ps.top().second &lt;&lt; ’\n’; // OK
+</code></pre></div>
+<h3 id="friends">Friends<a class="headerlink" href="#friends" title="Permanent link">&para;</a></h3>
+<p>相较于上节提到<code>printOn</code>函数，更好的方法是重载<code>&lt;&lt;</code>：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+    void printOn() (std::ostream&amp; strm) const { 
+        //...
+    }
+    // 为了使用私有变量 &lt;&lt; 应该被声明为友元函数 非模板友元函数
+    friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp; strm, Stack&lt;T&gt; const&amp; s) {
+        s.printOn(strm);
+        return strm;
+    }
+};
+</code></pre></div>
+<p>对于模板友元函数的声明存在两种选择：</p>
+<ol>
+<li>隐式的声明一个函数模板，使用不同的模板参数:</li>
+</ol>
+<p><div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+    //...
+    template&lt;typename U&gt;
+    friend std::ostream&amp; operator&lt;&lt; (std::ostream&amp;, Stack&lt;U&gt; const&amp;);
+};
+</code></pre></div>
+2. 前置声明类和函数:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack;
+template&lt;typename T&gt;
+std::ostream&amp; operator&lt;&lt; (std::ostream&amp;, Stack&lt;T&gt; const&amp;);
+</code></pre></div>
+<p>之后，在声明该函数为友元:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+    //...
+    friend std::ostream&amp; operator&lt;&lt; `&lt;T&gt;` (std::ostream&amp;,
+                                    Stack&lt;T&gt; const&amp;);
+};
+</code></pre></div>
+<p>注意上述中<code>&lt;&lt;</code>后面的<code>&lt;T&gt;</code>，其实是将函数模板特化为类型<code>&lt;T&gt;</code>并将其声明为友元函数。</p>
+<h3 id="specializations-of-class-templates">类模板的特化(Specializations of Class Templates)<a class="headerlink" href="#specializations-of-class-templates" title="Permanent link">&para;</a></h3>
+<p>可以使用特定的模板参数来特化类模板。不过，特化类模板时要求特化所有的成员函数。特化模板类时要使用<code>template&lt;&gt;</code>声明：</p>
+<div class="highlight"><pre><span></span><code>template&lt;&gt;
+class Stack&lt;std::string&gt; {
+   // ...
+};
+</code></pre></div>
+<p>其成员函数特化：</p>
+<div class="highlight"><pre><span></span><code>void Stack&lt;std::string&gt;::push (std::string const&amp; elem)
+{
+    elems.push_back(elem); // append copy of passed elem 
+}
+</code></pre></div>
+<h3 id="partial-specialization">部分特化(偏特化,Partial Specialization)<a class="headerlink" href="#partial-specialization" title="Permanent link">&para;</a></h3>
+<p>类是可以偏特化的。对于一个含有一个模板参数的类来说。一种典型的偏特化是将<code>&lt;T&gt;</code>声明为<code>&lt;T*&gt;</code>还是上面的<code>Stack&lt;&gt;</code>类，其可以偏特化为：</p>
+<p><div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack&lt;T*&gt; {
+private:
+    std::vector&lt;T*&gt; elems; // elements
+public:
+    void push(T*); // push element
+    T* pop(); // pop element
+    T* top() const; // return top element
+    bool empty() const { // return whether the stack is empty
+        return elems.empty();
+    }
+};
+
+template&lt;typename T&gt;
+void Stack&lt;T*&gt;::push (T* elem) // append copy of passed elem
+{
+    elems.push_back(elem);
+}
+template&lt;typename T&gt;
+T* Stack&lt;T*&gt;::pop ()
+{
+    assert(!elems.empty());
+    T* p = elems.back();
+    elems.pop_back(); // remove last element
+    return p; // and return it (unlike in the general case)
+}
+template&lt;typename T&gt;
+T* Stack&lt;T*&gt;::top () const
+{
+    assert(!elems.empty());
+    return elems.back(); // return copy of last element
+}
+</code></pre></div>
+将模板特化为<code>&lt;T*&gt;</code></p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack&lt;T*&gt; {
+    //...
+};
+</code></pre></div>
+<p>更常见的模板偏特化是多个模板参数<code>T1,T2,...</code>其中制定部分参数的类型:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T1, typename T2&gt;
+class MyClass {
+    //...
+};
+</code></pre></div>
+<p>两个模板参数特化为相同的类型:
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class MyClass&lt;T,T&gt; {
+    //...
+};
+</code></pre></div></p>
+<p>指定第二个类型为<code>int</code>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class MyClass&lt;T,int&gt; {
+    //...
+};
+</code></pre></div></p>
+<p>特化为指针：
+<div class="highlight"><pre><span></span><code>template&lt;typename T1, typename T2&gt;
+class MyClass &lt;T1*,T2*&gt;{
+    //...
+};
+</code></pre></div></p>
+<h3 id="default-class-template-arguments">默认类模版参数(Default Class Template Arguments)<a class="headerlink" href="#default-class-template-arguments" title="Permanent link">&para;</a></h3>
+<p>在上面的提到的<code>Stack&lt;&gt;</code>类中，可以定义一个容器用来管理元素，并将此容器作为第二个模板参数，默认值为<code>std::vector&lt;&gt;</code>,</p>
+<div class="highlight"><pre><span></span><code>#include &lt;vector&gt;
+#include &lt;cassert&gt;
+
+template&lt;typename T, typename Cont = std::vector&lt;T&gt;&gt; // 第二个模板参数，默认值为`std::vector&lt;&gt;`
+class Stack {
+  private:
+    Cont elems;                // elements
+
+  public:
+    void push(T const&amp; elem);  // push element
+    void pop();                // pop element
+    T const&amp; top() const;      // return top element
+    bool empty() const {       // return whether the stack is empty
+        return elems.empty();
+    }
+};
+
+template&lt;typename T, typename Cont&gt;
+void Stack&lt;T,Cont&gt;::push (T const&amp; elem)
+{
+    elems.push_back(elem);     // append copy of passed elem
+}
+
+template&lt;typename T, typename Cont&gt;
+void Stack&lt;T,Cont&gt;::pop ()
+{
+    assert(!elems.empty());
+    elems.pop_back();          // remove last element
+}
+
+template&lt;typename T, typename Cont&gt;
+T const&amp; Stack&lt;T,Cont&gt;::top () const
+{
+    assert(!elems.empty());
+    return elems.back();       // return copy of last element
+}
+</code></pre></div>
+<blockquote>
+<ul>
+<li>存在两个模板参数时，定义成员函数时也要两个参数</li>
+</ul>
+</blockquote>
+<div class="highlight"><pre><span></span><code>template&lt;typename T, typename Cont&gt;
+void Stack&lt;T,Cont&gt;::push (T const&amp; elem)
+{
+    elems.push_back(elem);     // append copy of passed elem
+}
+</code></pre></div>
+<p>在使用<code>Stack&lt;&gt;</code>时，如果只传入一个参数，第二个参数就会使用默认值:</p>
+<div class="highlight"><pre><span></span><code>Stack&lt;int&gt; intStack; // Stack&lt;int,std::vector&lt;int&gt;&gt; intStack;
+</code></pre></div>
+<h3 id="type-aliases">Type Aliases(类型别名)<a class="headerlink" href="#type-aliases" title="Permanent link">&para;</a></h3>
+<h4 id="typedefs-alias-declarations"><code>typedefs</code> Alias Declarations<a class="headerlink" href="#typedefs-alias-declarations" title="Permanent link">&para;</a></h4>
+<p><code>C++</code>中可以使用两个关键字声明类型别名</p>
+<ol>
+<li><code>typedef</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code>typedef Stack&lt;int&gt; IntStack; // typedef
+void foo (IntStack const&amp; s); // s is stack of ints
+IntStack istack[10]; // istack is array of 10 stacks of ints
+</code></pre></div>
+<ol start="2">
+<li><code>using</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code>using IntStack = Stack&lt;int&gt;; // alias declaration
+void foo (IntStack const&amp; s); // s is stack of ints
+IntStack istack[10]; // istack is array of 10 stacks of ints
+</code></pre></div>
+<blockquote>
+<p>注: 是别名，不是新类型</p>
+</blockquote>
+<h4 id="alias-templates">Alias Templates(模板别名)<a class="headerlink" href="#alias-templates" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+using DequeStack = Stack&lt;T, std::deque&lt;T&gt;&gt;;
+</code></pre></div>
+<blockquote>
+<p>模板只能声明定义在全局或者在类中。</p>
+</blockquote>
+<h4 id="alias-templates-for-member-types">成员类型的模板别名(Alias Templates for Member Types)<a class="headerlink" href="#alias-templates-for-member-types" title="Permanent link">&para;</a></h4>
+<p>和模板别名相同，给成员类型重新命名，方便使用：</p>
+<div class="highlight"><pre><span></span><code>struct MyType {
+    using iterator = ...; 
+}
+template&lt;typename T&gt;
+using MyTypeIterator = typename MyType&lt;T&gt;::iterator;
+</code></pre></div>
+<p>可以直接使用
+<div class="highlight"><pre><span></span><code>MyTypeIterator&lt;int&gt; pos;
+</code></pre></div></p>
+<p>而不是：</p>
+<div class="highlight"><pre><span></span><code>typename MyType&lt;T&gt;::iterator pos;
+</code></pre></div>
+<h4 id="_ttype-traits-suffix-_t">类型特征后缀 <code>_t</code>(Type Traits Suffix <code>_t</code>)<a class="headerlink" href="#_ttype-traits-suffix-_t" title="Permanent link">&para;</a></h4>
+<p><code>C++14</code>之后使用<code>std::add_const_t&lt;T&gt;</code>代替<code>C++11</code>的<code>typename std::add_const&lt;T&gt;::type</code>:</p>
+<div class="highlight"><pre><span></span><code>namespace std {
+    template&lt;typename T&gt; using add_const_t = typename add_const&lt;T&gt;::type;
+}
+</code></pre></div>
+<h3 id="class-template-argument-deduction">类模板参数推断(Class Template Argument Deduction)<a class="headerlink" href="#class-template-argument-deduction" title="Permanent link">&para;</a></h3>
+<p>在<code>C++17</code>之前使用类模板需要传递所有的模板参数，从<code>C++17</code>开始，当构造函数能做类型推断时，不再需要传递所有参数:</p>
+<div class="highlight"><pre><span></span><code>Stack&lt;int&gt; intStack1; // stack of strings
+Stack&lt;int&gt; intStack2 = intStack1; // OK in all versions
+Stack intStack3 = intStack1; // OK since C++17 Stack&lt;&gt;类的构造函数可以进行类型推断
+</code></pre></div>
+<p>通过给构造函数提供初始参数，<code>Stack&lt;&gt;</code>类就会支持元素类型推断:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+private:
+    std::vector&lt;T&gt; elems; // elements
+public:
+    Stack () = default;
+    Stack (T const&amp; elem) // initialize stack with one element 含参构造函数
+     : elems({elem}) {
+    }
+    //...
+};
+</code></pre></div>
+<p><code>C++17</code>之后，以下语句，构造函数会进行类型推断
+<div class="highlight"><pre><span></span><code>Stack intStack = 0; //模板参数被推断为 int，类型为Stack&lt;int&gt; 这个代码报错
+
+Stack intStack(0); //这行可以
+</code></pre></div></p>
+<p>上面的例子有两个需要注意的地方：</p>
+<ol>
+<li>
+<p><code>Stack() = default;</code></p>
+</li>
+<li>
+<p>构造函数参数为<code>{elem}</code>，注意花括号</p>
+</li>
+</ol>
+<h4 id="class-template-arguments-deduction-with-string-literals">字符串常量的类模板参数推断(Class Template Arguments Deduction with String Literals)<a class="headerlink" href="#class-template-arguments-deduction-with-string-literals" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code>Stack stringStack = &quot;bottom&quot;; // Stack&lt;char const[7]&gt; deduced since C++17
+</code></pre></div>
+<p>可以看到<code>"bottom"</code>被推断为<code>char const[7]</code>,这是因为引用传参时类型不会衰变(<code>decay</code>)，这会带来一个问题：元素的大小被写死了。
+但是，按值传参时类型会衰变为<code>char const*</code>，就不存在上面的问题了。因此，模板的定义可以修改为：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+private:
+    std::vector&lt;T&gt; elems; // elements
+public:
+    Stack (T const elem) // initialize stack with one element 含参构造函数
+     : elems({elem}) {
+    }
+    //...
+};
+</code></pre></div>
+<p>为了避免拷贝，建议使用移动语义:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+class Stack {
+private:
+    std::vector&lt;T&gt; elems; // elements
+public:
+    Stack (T const elem) // initialize stack with one element 含参构造函数
+     : elems({std::move(elem)}) {
+    }
+    //...
+};
+</code></pre></div>
+<h4 id="deduction-guides">推断规则(Deduction Guides）<a class="headerlink" href="#deduction-guides" title="Permanent link">&para;</a></h4>
+<p>可以看到构造函数按值传参会使<code>string</code>衰变为<code>char*</code>，在容器中处理原始指针会增加复杂度，因此一个比较好的办法是禁止将<code>string</code>推断为<code>char*</code>。使用自定义的推断规则即可：</p>
+<div class="highlight"><pre><span></span><code>Stack(char const*) -&gt; Stack&lt;std::string&gt;;
+</code></pre></div>
+<h3 id="templatized-aggregates">模板化聚合(Templatized Aggregates)<a class="headerlink" href="#templatized-aggregates" title="Permanent link">&para;</a></h3>
+<p>聚合类也可以模板化:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T&gt;
+struct ValueWithComment {
+    T value;
+    std::string comment;
+};
+
+ValueWithComment&lt;int&gt; vc;
+vc.value = 42;
+vc.comment = &quot;initial value&quot;;
+</code></pre></div>
+<p>也可以为其增加推断规则:</p>
+<div class="highlight"><pre><span></span><code>ValueWithComment(char const*, char const*) -&gt; ValueWithComment&lt;std::string&gt;;
+
+ValueWithComment vc2 = {&quot;hello&quot;, &quot;initial value&quot;}; // 如果没有推断规则，本语句非法，`ValueWithComment`为提供构造函数
+</code></pre></div>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../READ/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 简介" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              简介
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../%E6%97%A0%E7%B1%BB%E5%9E%8B%E6%A8%A1%E6%9D%BF%E5%8F%82%E6%95%B0/" class="md-footer__link md-footer__link--next" aria-label="Next: 非类型模板参数" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              非类型模板参数
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.2a1c317c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.3a4b43e5.min.js"></script>
+      
+        <script src="../../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      
+    
+  </body>
+</html>
