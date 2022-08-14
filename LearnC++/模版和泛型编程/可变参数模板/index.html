@@ -471,6 +471,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variadic-indices" class="md-nav__link">
+    可变索引(Variadic Indices)
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -860,6 +867,13 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#variadic-indices" class="md-nav__link">
+    可变索引(Variadic Indices)
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1049,6 +1063,60 @@ template&lt;typename... Args&gt; void bar (Args const&amp;... args);
 </code></pre></div>
 <h3 id="variadic-class-templates-and-variadic-expressions">可变参数类模板和可变参数表达式(Variadic Class Templates and Variadic Expressions)<a class="headerlink" href="#variadic-class-templates-and-variadic-expressions" title="Permanent link">&para;</a></h3>
 <h4 id="_1">可变参数表达式<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h4>
+<p>和直接转发<code>forward</code>参数相比，可以对参数包里面的参数进行计算。比如每个参数都乘二:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename... T&gt;
+void printDoubled (T const&amp;... args)
+{
+    print (args + args...);
+}
+</code></pre></div>
+<blockquote>
+<p>注意上面这个和折叠表达式的区别。</p>
+</blockquote>
+<p>当<code>printDoubled(7.5, std::string("hello"), std::complex&lt;float&gt;(4,2))</code>时，函数会执行:</p>
+<div class="highlight"><pre><span></span><code>print(7.5 + 7.5,
+    std::string(&quot;hello&quot;) + std::string(&quot;hello&quot;),
+    std::complex&lt;float&gt;(4,2) + std::complex&lt;float&gt;(4,2);
+</code></pre></div>
+<p>值得注意的是，由于<code>...</code>，所以如果只想给每个元素加一时，需要增加一个空格，或者用括号括起来：</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename... T&gt;
+void addOne (T const&amp;... args)
+{
+    print (args + 1...); // ERROR: 1... is a literal with too many decimal points
+    print (args + 1 ...); // OK 空格
+    print ((args + 1)...); // OK 括号
+}
+</code></pre></div>
+<p>编译时表达式也可以用这种方法操作可变参数:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename T1, typename... TN&gt;
+constexpr bool isHomogeneous (T1, TN...)
+{
+    return (std::is_same&lt;T1,TN&gt;::value &amp;&amp; ...); // since C++17 
+}
+</code></pre></div>
+<h4 id="variadic-indices">可变索引(Variadic Indices)<a class="headerlink" href="#variadic-indices" title="Permanent link">&para;</a></h4>
+<p>可变索引可以用来获取一个数组的多个元素:</p>
+<div class="highlight"><pre><span></span><code>template&lt;typename C, typename... Idx&gt;
+void printElems (C const&amp; coll, Idx... idx)
+{
+    print (coll[idx]...);
+}
+
+std::vector&lt;std::string&gt; coll = {&quot;good&quot;, &quot;times&quot;, &quot;say&quot;, &quot;bye&quot;};
+printElems(coll,2,0,3);
+
+print (coll[2], coll[0], coll[3]);
+</code></pre></div>
+<p>也可以声明一个可变无类型模板:</p>
+<div class="highlight"><pre><span></span><code>template&lt;std::size_t... Idx, typename C&gt;
+void printIdx (C const&amp; coll)
+{
+    print(coll[Idx]...);
+}
+
+std::vector&lt;std::string&gt; coll = {&quot;good&quot;, &quot;times&quot;, &quot;say&quot;, &quot;bye&quot;};
+printIdx&lt;2,0,3&gt;(coll);
+</code></pre></div>
 
               
             </article>
